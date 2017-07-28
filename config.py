@@ -10,7 +10,7 @@ import time
 # user configure files
 pythonDistPath = './PythonDist'
 flowpyDistPath = './flowpy'  
-tempfilesPath  = './temp/{}'
+tempfilesPath  = './temp_version/{}'
 # ======================
 
 # =====================
@@ -20,7 +20,8 @@ modules={
     'ast':'Python/ast.c',
     'symtable':'Python/symtable.c',
     'parser':'Parser/Python.asdl',
-    'grammar':'Grammar/Grammar'
+    'grammar':'Grammar/Grammar',
+    'compile':'Python/compile.c'
 }
 # =====================
 
@@ -34,16 +35,20 @@ fdump = fsave
 def fileGen(module, *presentnames: ["pythonDistPath","flowpyDistPath","tempfilesPath"] ):
     if len(presentnames)!=3: return BaseException("Params InputNum Do Not Match 3.")
     
-    toRep, rep, temp = map(joinPath , presentnames ,(module, )*3 )
+    _to, from_, temp = map(joinPath , presentnames ,(module, )*3 )
     
-    for _ in map(isFileExists, (toRep, rep) ):pass
+    for _ in map(isFileExists, (_to, from_) ) : pass
+    
+    if temp:
+        createTemp(temp)
+    
+    _ = fload(_to)
 
-    createTemp(temp)
-
-    _ = fload(toRep)
-    fsave(_, temp)
-    _ = fload(rep)
-    fdump(_, toRep) 
+    if temp:
+        fsave(_, temp)
+    
+    _ = fload(from_)
+    fdump(_, _to) 
 
     return "OK" 
 
@@ -64,18 +69,25 @@ if __name__ == '__main__':
         elif read_in_arg_status:
             dict_args[key] = arg_i
 
+    
     action_version = dict_args['v'] if'v' in dict_args else time.time()
     tempfilesPath = tempfilesPath.format(action_version)
+
     def actions(id_str):
-        _to, from_ =(pythonDistPath, flowpyDistPath) if id_str == 'commit' else (flowpyDistPath,pythonDistPath)
+        _to, from_ ,temp = (pythonDistPath, flowpyDistPath, tempfilesPath) if id_str == 'commit' else\
+                           (flowpyDistPath, pythonDistPath, tempfilesPath) if id_str == 'back' else\
+                           (pythonDistPath, tempfilesPath,  flowpyDistPath)
         for module in modules:
-            fileGen(modules[module], _to, from_, tempfilesPath )
+            fileGen(modules[module], _to, from_, temp )
 
     if   main_arg == 'commit':
         actions('commit')
     elif main_arg == 'recover':
         actions('recover')
+    elif main_arg == 'back':
+        actions('back')
     else:
+        print(BaseException("main argument cannot be identified."))
         pass
 
 
