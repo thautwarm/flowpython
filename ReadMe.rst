@@ -36,13 +36,13 @@ Grammar
         with-in
             statements
             ...
-        with-def
+        with-break
 
     # "test" is the top one of expression in Python Grammar.
 
 *Take a look at here*:
 
-the **with-in-with-def** blocks would be **executed before the other parts** in "where" syntax, 
+the **with-in-with-break** blocks would be **executed before the other parts** in "where" syntax, 
 but it should be **located as the end**.
 
 - Q :Why did I bring "where" syntax into Python?
@@ -63,11 +63,17 @@ See the following codes:
             S_side = C * h where:
                 with-in
                         C = 2*pi*r
-                with-def
-        with-def
+                with-break
+        with-break
     
 
 
+Revision
+------------
+
+* **where**  syntax
+
+    "with-in-with-def" to "with-in-with-break"
 
 
 
