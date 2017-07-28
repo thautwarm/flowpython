@@ -24,7 +24,7 @@ Grammar
 
 **with quite few new additional keywords here**
 
-1. where expression
+* where expression
 
 .. code:: flowpy
 
