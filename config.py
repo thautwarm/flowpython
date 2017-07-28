@@ -8,8 +8,8 @@ date: 25/07/17
 
 # =====================
 # user configure files
-pythonDistPath = './Python'  
-flowpyDistPath = './flowpy'
+pythonDistPath = './Python-3.6.2'  
+flowpyDistPath = './PythonDist'
 tempfilesPath  = './temp'
 # ======================
 
@@ -27,27 +27,27 @@ modules={
 
 
 import os
-from utils import createTemp, isFileExists , fload, fsave 
+from utils import createTemp, isFileExists , fload, fsave, tryAction, joinPath
 fdump = fsave
 
 def fileGen(module, *presentnames: ["pythonDistPath","flowpyDistPath","tempfilesPath"] ):
     if len(presentnames)!=3: return BaseException("Params InputNum Do Not Match 3.")
     
-    toRep, rep, temp = map(os.path.join , presentnames ,(module)*3 )
+    toRep, rep, temp = map(joinPath , presentnames ,(module, )*3 )
     
     for _ in map(isFileExists, (toRep, rep) ):pass
 
     createTemp(temp)
 
-    tryAction("fload(toRep)")
-    tryAction("fsave(_, temp)")
-    tryAction("fload(rep)")
-    tryAction("fdump(_, toRep)") 
+    _ = fload(toRep)
+    fsave(_, temp)
+    _ = fload(rep)
+    fdump(_, toRep) 
 
     return "OK" 
 
 for module in modules:
-    fileGen( module, pythonDistPath, flowpyDistPath, tempfilesPath )
+    fileGen(modules[module], pythonDistPath, flowpyDistPath, tempfilesPath )
 
 
 
