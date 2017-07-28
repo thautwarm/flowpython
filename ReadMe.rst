@@ -24,7 +24,7 @@ Grammar
 
 **with quite few new additional keywords here**
 
-- where expression
+# where expression
 
 .. code:: flowpy
 
@@ -40,10 +40,10 @@ Grammar
 
     # "test" is the top one of expression in Python Grammar.
 
-Take a look at here:
+*Take a look at here*:
 
-    the **with-in-with-def** blocks would be **executed before the other parts** in "where" syntax, 
-    but it should be **located as the end**.
+the **with-in-with-def** blocks would be **executed before the other parts** in "where" syntax, 
+but it should be **located as the end**.
 
 - Q :Why did I bring "where" syntax into Python?
 - A :For **combined the expressions and statements** in Python and enhanced the readability of procedure. 
