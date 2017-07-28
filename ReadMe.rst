@@ -46,7 +46,7 @@ the **with-in-with-def** blocks would be **executed before the other parts** in 
 but it should be **located as the end**.
 
 - Q :Why did I bring "where" syntax into Python?
-- A :For **combined the expressions and statements** in Python and enhanced the readability of procedure. 
+- A :For **combining the expressions and statements** in Python and enhanced the readability of procedure. 
 
 See the following codes:
 
