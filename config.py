@@ -106,7 +106,7 @@ if __name__ == '__main__':
                 os.system("make")
             elif m in make_args:
                 os.system(make_args[m])
-    elif main_arg == 'debug':
+    elif main_arg == 'test':
 
         os.chdir(pythonDistPath)
         testfilePath = '../test'

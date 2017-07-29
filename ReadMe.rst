@@ -141,12 +141,14 @@ It assembled the following modules:
 
 It can be used like these way:
 
-    ./conf commit -v <version_name>
-    ./conf recover 
-    ./conf debug -f test_where
-    ./conf make -m clean
-    ./conf make -m ast
-    ...
+    .. code::shell
+    
+        ./conf commit -v <version_name>
+        ./conf recover 
+        ./conf debug -f test_where
+        ./conf make -m clean
+        ./conf make -m ast
+        ...
 
 It seems to be kind of complicated but it's quite easy to understand and operate in fact.
 
