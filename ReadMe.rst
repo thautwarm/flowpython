@@ -100,7 +100,7 @@ Revision
     * **test if else test**
         * make a change to support like
         
-        .. code:: flowpy
+        .. code:: python
 
             ret  =  e1 if j1 else
                     e2 if j2 else
@@ -108,7 +108,7 @@ Revision
     
         instead of
 
-        .. code:: flowpy
+        .. code:: python
 
             ret  =  e1 if j1 else \
                     e2 if j2 else \
