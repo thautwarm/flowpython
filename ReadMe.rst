@@ -128,6 +128,29 @@ run the following commands:
 And then you can enjoy Flowpython!
 
 
+For Developers
+---------------
+
+I wrote config.py as the project-manage tool of Flowpython.
+
+It assembled the following modules:
+    - make
+    - git
+    - customer version controler 
+    - debug&unittest
+
+It can be used like these way:
+
+    ./conf commit -v <version_name>
+    ./conf recover 
+    ./conf debug -f test_where
+    ./conf make -m clean
+    ./conf make -m ast
+    ...
+
+It seems to be kind of complicated but it's quite easy to understand and operate in fact.
+
+
 
 
 
