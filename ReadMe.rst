@@ -68,7 +68,7 @@ And where syntax makes it possible for **Lambda** in Python to do everything **d
             pass
     
 
-However, in Flowpython, there are some other way more interesting to define a "lambda" than "lambda x: f(x)"  supplied:
+However, in Flowpython, there are some other way more interesting supplied to define a "lambda" than "lambda x: f(x)" :
 
 .. code:: python
 
