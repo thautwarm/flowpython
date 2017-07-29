@@ -4428,10 +4428,6 @@ compiler_visit_expr(struct compiler *c, expr_ty e)
         return compiler_list(c, e);
     case Tuple_kind:
         return compiler_tuple(c, e);
-    case Where_kind:
-        VISIT_SEQ(c, stmt, e->v.Where.body);
-        VISIT(c, expr, e->v.Where.target);
-        break;
     }
     return 1;
 }

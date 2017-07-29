@@ -1744,6 +1744,15 @@ ast_for_ifexpr(struct compiling *c, const node *n)
 {
     /* test: or_test 'if' or_test 'else' test */
     expr_ty expression, body, orelse;
+    int idx_of_orelse = 5;
+
+    if (TYPE(CHILD(n, 4)) == shift_enter){
+        assert(NCH(n) == 6);
+    }
+    else{
+        assert(NCH(n) == 5);
+        idx_of_orelse = 4;
+    }
 
     assert(NCH(n) == 5);
     body = ast_for_expr(c, CHILD(n, 0));
@@ -1752,7 +1761,7 @@ ast_for_ifexpr(struct compiling *c, const node *n)
     expression = ast_for_expr(c, CHILD(n, 2));
     if (!expression)
         return NULL;
-    orelse = ast_for_expr(c, CHILD(n, 4));
+    orelse = ast_for_expr(c, CHILD(n, idx_of_orelse));
     if (!orelse)
         return NULL;
     return IfExp(expression, body, orelse, LINENO(n), n->n_col_offset,
@@ -2531,6 +2540,25 @@ ast_for_starred(struct compiling *c, const node *n)
     return Starred(tmp, Load, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
+static expr_ty
+ast_for_where_expr(struct compiling *c, const node *n)
+{   
+    /* where_expr: test where_handler
+     */
+    expr_ty target;
+    asdl_seq *body;
+    const node* where_handler = CHILD(n,1);
+
+    body   = ast_for_suite    (c, CHILD(n, 6) );
+    if(!body  ) return NULL;
+
+    target = ast_for_atom_expr(c, CHILD(n, 0) );
+    if(!target) return NULL;
+
+    return Where(target, body, LINENO(n),  n->n_col_offset, c->c_arena);
+
+}
+
 
 /* Do not name a variable 'expr'!  Will cause a compile error.
 */
@@ -2563,6 +2591,9 @@ ast_for_expr(struct compiling *c, const node *n)
  loop:
     switch (TYPE(n)) {
         case test:
+                if (NCH(n) == 2){
+                    return ast_for_where_expr(c, n);
+                }
         case test_nocond:
             if (TYPE(CHILD(n, 0)) == lambdef ||
                 TYPE(CHILD(n, 0)) == lambdef_nocond)

@@ -25,6 +25,15 @@ modules={
 }
 # =====================
 
+make_args={
+    'clean':'make clean',
+    'reconf': './configure CC=clang CXX=clang++ --without-gcc',
+    'clear':'make distclean',
+    'grammar':'make regen-grammar',
+    'ast':'make regen-ast',
+    'all':['clean','reconf','grammar','ast']
+}
+
 
 import sys
 import os
@@ -73,7 +82,7 @@ if __name__ == '__main__':
     action_version = dict_args['v'] if'v' in dict_args else time.time()
     tempfilesPath = tempfilesPath.format(action_version)
 
-    def actions(id_str):
+    def version_control(id_str):
         _to, from_ ,temp = (pythonDistPath, flowpyDistPath, tempfilesPath) if id_str == 'commit' else\
                            (flowpyDistPath, pythonDistPath, tempfilesPath) if id_str == 'back' else\
                            (pythonDistPath, tempfilesPath,  flowpyDistPath)
@@ -81,11 +90,24 @@ if __name__ == '__main__':
             fileGen(modules[module], _to, from_, temp )
 
     if   main_arg == 'commit':
-        actions('commit')
+        version_control('commit')
     elif main_arg == 'recover':
-        actions('recover')
+        version_control('recover')
     elif main_arg == 'back':
-        actions('back')
+        version_control('back')
+    elif main_arg == 'debug':
+        os.chdir(pythonDistPath)
+        if 'm' not in dict_args:
+            os.system("make")
+        else:
+            m = dict_args['m']
+            if m == 'all':
+                args = make_args[m]
+                for arg in args:
+                    os.system(make_args[arg])
+                os.system("make")
+            elif m in make_args:
+                os.system(make_args[m])
     else:
         print(BaseException("main argument cannot be identified."))
         pass
