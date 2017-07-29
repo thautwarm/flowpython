@@ -48,8 +48,8 @@ See the following codes:
 
     # 圆柱面积 / surface area of a cylinder 
     from math import pi
-    r = 1 # the radius
-    h =   # the height
+    r = 1  # the radius
+    h = 10 # the height
 
     S = (2*S_top + S_side) where:
         S_top  = pi*r**2
