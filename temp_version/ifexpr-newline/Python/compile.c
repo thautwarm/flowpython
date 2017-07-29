@@ -2828,8 +2828,6 @@ compiler_visit_stmt(struct compiler *c, stmt_ty s)
         VISIT_SEQ(c, expr, s->v.Delete.targets)
         break;
     case Assign_kind:
-        if (s->v.Assign.handler != NULL)
-            VISIT_SEQ(c, stmt , s->v.Assign.handler);
         n = asdl_seq_LEN(s->v.Assign.targets);
         VISIT(c, expr, s->v.Assign.value);
         for (i = 0; i < n; i++) {
@@ -2840,12 +2838,8 @@ compiler_visit_stmt(struct compiler *c, stmt_ty s)
         }
         break;
     case AugAssign_kind:
-        if (s->v.AugAssign.handler !=NULL)
-            VISIT_SEQ(c, stmt , s->v.AugAssign.handler);
         return compiler_augassign(c, s);
     case AnnAssign_kind:
-        if (s->v.AnnAssign.handler !=NULL)
-            VISIT_SEQ(c, stmt , s->v.AnnAssign.handler);
         return compiler_annassign(c, s);
     case For_kind:
         return compiler_for(c, s);
@@ -2877,8 +2871,6 @@ compiler_visit_stmt(struct compiler *c, stmt_ty s)
     case Nonlocal_kind:
         break;
     case Expr_kind:
-        if ( s->v.Expr.handler != NULL)
-            VISIT_SEQ(c, stmt , s->v.Expr.handler);
         return compiler_visit_stmt_expr(c, s->v.Expr.value);
     case Pass_kind:
         break;
@@ -4436,6 +4428,10 @@ compiler_visit_expr(struct compiler *c, expr_ty e)
         return compiler_list(c, e);
     case Tuple_kind:
         return compiler_tuple(c, e);
+    case Where_kind:
+        VISIT_SEQ(c, stmt, e->v.Where.body);
+        VISIT(c, expr, e->v.Where.target);
+        break;
     }
     return 1;
 }

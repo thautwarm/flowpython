@@ -27,7 +27,7 @@ modules={
 
 make_args={
     'clean':'make clean',
-    'reconf': './configure CC=clang CXX=clang++ --without-gcc',
+    'reconf': './configure CC=clang CXX=clang++ --without-gcc --with-pydebug',
     'clear':'make distclean',
     'grammar':'make regen-grammar',
     'ast':'make regen-ast',
@@ -51,13 +51,11 @@ def fileGen(module, *presentnames: ["pythonDistPath","flowpyDistPath","tempfiles
     if temp:
         createTemp(temp)
     
-    _ = fload(_to)
+    version_now = fload(from_)
+    fdump(version_now, _to)
 
     if temp:
-        fsave(_, temp)
-    
-    _ = fload(from_)
-    fdump(_, _to) 
+        fsave(version_now, temp)
 
     return "OK" 
 
@@ -95,7 +93,7 @@ if __name__ == '__main__':
         version_control('recover')
     elif main_arg == 'back':
         version_control('back')
-    elif main_arg == 'debug':
+    elif main_arg == 'make':
         os.chdir(pythonDistPath)
         if 'm' not in dict_args:
             os.system("make")
@@ -108,6 +106,19 @@ if __name__ == '__main__':
                 os.system("make")
             elif m in make_args:
                 os.system(make_args[m])
+    elif main_arg == 'debug':
+
+        os.chdir(pythonDistPath)
+        testfilePath = '../test'
+
+        if 'f' in dict_args:
+            files = filter(lambda x:x, dict_args['f'].split(" "))
+        else:
+            files = os.listdir(testfilePath)
+        files =map(lambda x: joinPath(testfilePath, x), files)
+        for file in files:
+            print('testing on {}'.format(file))
+            os.system("./python {}".format(file))
     else:
         print(BaseException("main argument cannot be identified."))
         pass

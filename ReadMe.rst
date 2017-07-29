@@ -24,26 +24,20 @@ Grammar
 
 **with quite few new additional keywords here**
 
-* where expression
+* where syntax
 
 .. code:: flowpy
 
     (test) where:
-        as <caseClass> => test
+        statements
         ...
-        as-def <function> => test
-        ...
-        with-in
-            statements
-            ...
-        with-break
 
-    # "test" is the top one of expression in Python Grammar.
+    # "test" is the top one of expressions in Python Grammar.
 
 *Take a look at here*:
 
-the **with-in-with-break** blocks would be **executed before the other parts** in "where" syntax, 
-but it should be **located as the end**.
+the **where** blocks would be **executed before the expression at the head**, 
+but it should be **located at the end**.
 
 - Q :Why did I bring "where" syntax into Python?
 - A :For **combining the expressions and statements** in Python and enhanced the readability of procedure. 
@@ -58,22 +52,87 @@ See the following codes:
     h =   # the height
 
     S = (2*S_top + S_side) where:
-        with-in
-            S_top  = pi*r**2
-            S_side = C * h where:
-                with-in
-                        C = 2*pi*r
-                with-break
-        with-break
-    
+        S_top  = pi*r**2
+        S_side = C * h where:
+            C = 2*pi*r
 
 
 Revision
 ------------
 
-* **where**  syntax
 
-    "with-in-with-def" to "with-in-with-break"
+- date: 2017-07-28
+    * **where**  syntax 
+
+    **with-in-with-def** => **with-in-with-break**
+
+- date: 2017-7-29
+    
+    * **test if else test**
+
+    make a change to support like
+
+    .. code:: flowpy
+
+        ret  =  e1 if j1 else
+                e2 if j2 else
+                e3 
+    
+    instead of
+
+    .. code:: flowpy
+
+        ret  =  e1 if j1 else \
+                e2 if j2 else \
+                e3 
+
+    * **where** syntax 
+
+    **with-in-with-def** => **where - syntax**
+
+
+How To Get FlowPy
+--------------
+
+Firstly, you should have a C/C++ compiler like: 
+    
+    - https://gcc.gnu.org/
+    
+    - http://releases.llvm.org/
+
+To give some advice, you can easily get C/C++ compiler with    
+    
+    - **MinGW/Cygwin** on **windows**
+
+    - **sudo apt-get install gcc/clang** on **Ubuntu/Debian/Deepin** (maybe it also works for MacOS).
+
+And then you should have a CPython distribution like Python-3.6.2, like:
+    
+    - https://www.python.org/
+
+And then you should replace the files of the standard CPython distribution with Flowpython.
+
+Everyting about Flowpython can be found in the directory "/flowpy".
+
+Finally open the CMD/Terminal at the root of CPython distribution,
+
+run the following commands:
+    
+.. code:: shell
+
+    ./configure CC=<your C/C++ compiler>
+    make regen-gramamr
+    make regen-ast
+    make
+    ./python
+
+And then you can enjoy Flowpython!
+
+
+
+
+
+
 
 
 

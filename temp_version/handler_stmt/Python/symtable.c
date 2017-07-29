@@ -1183,14 +1183,10 @@ symtable_visit_stmt(struct symtable *st, stmt_ty s)
         VISIT_SEQ(st, expr, s->v.Delete.targets);
         break;
     case Assign_kind:
-        if (s->v.Assign.handler != NULL)
-            VISIT_SEQ(st, stmt, s->v.Assign.handler);
         VISIT_SEQ(st, expr, s->v.Assign.targets);
         VISIT(st, expr, s->v.Assign.value);
         break;
     case AnnAssign_kind:
-        if (s->v.AnnAssign.handler != NULL) 
-            VISIT_SEQ(st, stmt, s->v.AnnAssign.handler);
         if (s->v.AnnAssign.target->kind == Name_kind) {
             expr_ty e_name = s->v.AnnAssign.target;
             long cur = symtable_lookup(st, e_name->v.Name.id);
@@ -1228,8 +1224,6 @@ symtable_visit_stmt(struct symtable *st, stmt_ty s)
         }
         break;
     case AugAssign_kind:
-        if (s->v.AugAssign.handler != NULL)
-            VISIT_SEQ(st, stmt, s->v.AugAssign.handler);
         VISIT(st, expr, s->v.AugAssign.target);
         VISIT(st, expr, s->v.AugAssign.value);
         break;
@@ -1340,8 +1334,6 @@ symtable_visit_stmt(struct symtable *st, stmt_ty s)
         break;
     }
     case Expr_kind:
-        if (s->v.Expr.handler != NULL)
-            VISIT_SEQ(st, stmt, s->v.Expr.handler); 
         VISIT(st, expr, s->v.Expr.value);
         break;
     case Pass_kind:
