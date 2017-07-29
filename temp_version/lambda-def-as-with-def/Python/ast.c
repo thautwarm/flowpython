@@ -715,7 +715,7 @@ num_stmts(const node *n)
 
     switch (TYPE(n)) {
         case single_input:
-            if (TYPE(CHILD(n, 0)) == NEWLINE)
+            if ( TYPE(CHILD(n, 0)) == NEWLINE || TYPE(CHILD(n, 0)) == handler_stmt )
                 return 0;
             else
                 return num_stmts(CHILD(n, 0));
@@ -1744,16 +1744,7 @@ ast_for_ifexpr(struct compiling *c, const node *n)
 {
     /* test: or_test 'if' or_test 'else' test */
     expr_ty expression, body, orelse;
-    int idx_of_orelse = 5;
-
-    if (TYPE(CHILD(n, 4)) == shift_enter){
-        assert(NCH(n) == 6);
-    }
-    else{
-        assert(NCH(n) == 5);
-        idx_of_orelse = 4;
-    }
-
+    int idx_of_orelse = NCH(n) - 1;
     assert(NCH(n) == 5);
     body = ast_for_expr(c, CHILD(n, 0));
     if (!body)
@@ -2540,25 +2531,6 @@ ast_for_starred(struct compiling *c, const node *n)
     return Starred(tmp, Load, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
-static expr_ty
-ast_for_where_expr(struct compiling *c, const node *n)
-{   
-    /* where_expr: test where_handler
-     */
-    expr_ty target;
-    asdl_seq *body;
-    const node* where_handler = CHILD(n,1);
-
-    body   = ast_for_suite    (c, CHILD(n, 6) );
-    if(!body  ) return NULL;
-
-    target = ast_for_expr     (c, CHILD(n, 0) );
-    if(!target) return NULL;
-
-    return Where(target, body, LINENO(n),  n->n_col_offset, c->c_arena);
-
-}
-
 
 /* Do not name a variable 'expr'!  Will cause a compile error.
 */
@@ -2591,9 +2563,6 @@ ast_for_expr(struct compiling *c, const node *n)
  loop:
     switch (TYPE(n)) {
         case test:
-                if (NCH(n) == 2){
-                    return ast_for_where_expr(c, n);
-                }
         case test_nocond:
             if (TYPE(CHILD(n, 0)) == lambdef ||
                 TYPE(CHILD(n, 0)) == lambdef_nocond)
@@ -2923,9 +2892,11 @@ ast_for_testlist(struct compiling *c, const node* n)
 }
 
 static stmt_ty
-ast_for_expr_stmt(struct compiling *c, const node *n)
-{
+ast_for_expr_stmt(struct compiling *c, const node *n, asdl_seq* handler)
+{   
     REQ(n, expr_stmt);
+
+
     /* expr_stmt: testlist_star_expr (annassign | augassign (yield_expr|testlist) |
                             ('=' (yield_expr|testlist_star_expr))*)
        annassign: ':' test ['=' test]
@@ -2939,8 +2910,7 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
         expr_ty e = ast_for_testlist(c, CHILD(n, 0));
         if (!e)
             return NULL;
-
-        return Expr(e, LINENO(n), n->n_col_offset, c->c_arena);
+        return Expr(e, handler,LINENO(n), n->n_col_offset, c->c_arena);
     }
     else if (TYPE(CHILD(n, 1)) == augassign) {
         expr_ty expr1, expr2;
@@ -2978,7 +2948,7 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
         if (!newoperator)
             return NULL;
 
-        return AugAssign(expr1, newoperator, expr2, LINENO(n), n->n_col_offset, c->c_arena);
+        return AugAssign(expr1, newoperator, expr2, handler, LINENO(n), n->n_col_offset, c->c_arena);
     }
     else if (TYPE(CHILD(n, 1)) == annassign) {
         expr_ty expr1, expr2, expr3;
@@ -3037,7 +3007,7 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
             return NULL;
         }
         if (NCH(ann) == 2) {
-            return AnnAssign(expr1, expr2, NULL, simple,
+            return AnnAssign(expr1, expr2, NULL, simple, handler,
                              LINENO(n), n->n_col_offset, c->c_arena);
         }
         else {
@@ -3046,7 +3016,7 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
             if (!expr3) {
                 return NULL;
             }
-            return AnnAssign(expr1, expr2, expr3, simple,
+            return AnnAssign(expr1, expr2, expr3, simple, handler,
                              LINENO(n), n->n_col_offset, c->c_arena);
         }
     }
@@ -3085,7 +3055,7 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
             expression = ast_for_expr(c, value);
         if (!expression)
             return NULL;
-        return Assign(targets, expression, LINENO(n), n->n_col_offset, c->c_arena);
+        return Assign(targets, expression, handler, LINENO(n), n->n_col_offset, c->c_arena);
     }
 }
 
@@ -3153,7 +3123,7 @@ ast_for_flow_stmt(struct compiling *c, const node *n)
             expr_ty exp = ast_for_expr(c, CHILD(ch, 0));
             if (!exp)
                 return NULL;
-            return Expr(exp, LINENO(n), n->n_col_offset, c->c_arena);
+            return Expr(exp, NULL, LINENO(n), n->n_col_offset, c->c_arena);
         }
         case return_stmt:
             if (NCH(ch) == 1)
@@ -3995,14 +3965,37 @@ ast_for_classdef(struct compiling *c, const node *n, asdl_seq *decorator_seq)
                     decorator_seq, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
+// static asdl_seq*
+// ast_for_handler_stmt(struct compiling *c, const node *n)
+// {   
+//     asdl_seq* seq;
+//     REQ(n, handler_stmt);
+//     seq = ast_for_suite(c ,CHILD(n, 2));
+//     if (!seq)
+//         return NULL;
+//     return seq;
+// }
+//         const node* END_NODE =CHILD(n, NCH(n)-1);
+//         if( TYPE(END_NODE) == handler_stmt ){
+//             assert(TYPE(CHILD(n, 1)) == handler_stmt);
+//             handler = ast_for_handler_stmt(c, CHILD(END_NODE, 1));
+//         }
+
 static stmt_ty
 ast_for_stmt(struct compiling *c, const node *n)
-{
+{   
+    asdl_seq *handler = NULL;
     if (TYPE(n) == stmt) {
         assert(NCH(n) == 1);
         n = CHILD(n, 0);
     }
     if (TYPE(n) == simple_stmt) {
+        
+        if (TYPE(CHILD(n, NCH(n)-1)) == handler_stmt){
+            handler = ast_for_suite(c , CHILD( CHILD(n, NCH(n)-1), 2) );
+            if (!handler)
+                return NULL;
+        }
         assert(num_stmts(n) == 1);
         n = CHILD(n, 0);
     }
@@ -4012,29 +4005,35 @@ ast_for_stmt(struct compiling *c, const node *n)
                   | import_stmt | global_stmt | nonlocal_stmt | assert_stmt
         */
         switch (TYPE(n)) {
+            case expr_stmt:
+                return ast_for_expr_stmt(c, n, handler);
             case del_stmt:
                 return ast_for_del_stmt(c, n);
+                
             case pass_stmt:
                 return Pass(LINENO(n), n->n_col_offset, c->c_arena);
+                
             case flow_stmt:
                 return ast_for_flow_stmt(c, n);
+                
             case import_stmt:
                 return ast_for_import_stmt(c, n);
+                
             case global_stmt:
                 return ast_for_global_stmt(c, n);
+                
             case nonlocal_stmt:
                 return ast_for_nonlocal_stmt(c, n);
+                
             case assert_stmt:
                 return ast_for_assert_stmt(c, n);
+                
             default:
                 PyErr_Format(PyExc_SystemError,
                              "unhandled small_stmt: TYPE=%d NCH=%d\n",
                              TYPE(n), NCH(n));
                 return NULL;
         }
-    }
-    else if (TYPE(n) == expr_stmt ){
-        return ast_for_expr_stmt(c, n);
     }
     else {
         /* compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt
@@ -4045,22 +4044,31 @@ ast_for_stmt(struct compiling *c, const node *n)
         switch (TYPE(ch)) {
             case if_stmt:
                 return ast_for_if_stmt(c, ch);
+                
             case while_stmt:
                 return ast_for_while_stmt(c, ch);
+                
             case for_stmt:
                 return ast_for_for_stmt(c, ch, 0);
+                
             case try_stmt:
                 return ast_for_try_stmt(c, ch);
+                
             case with_stmt:
                 return ast_for_with_stmt(c, ch, 0);
+                
             case funcdef:
                 return ast_for_funcdef(c, ch, NULL);
+                
             case classdef:
                 return ast_for_classdef(c, ch, NULL);
+                
             case decorated:
                 return ast_for_decorated(c, ch);
+                
             case async_stmt:
                 return ast_for_async_stmt(c, ch);
+                
             default:
                 PyErr_Format(PyExc_SystemError,
                              "unhandled small_stmt: TYPE=%d NCH=%d\n",

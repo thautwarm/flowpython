@@ -34,12 +34,13 @@ varargslist: (vfpdef ['=' test] (',' vfpdef ['=' test])* [',' [
 )
 vfpdef: NAME
 
+handler_stmt: 'where' ':' suite 
 stmt: simple_stmt | compound_stmt
-simple_stmt: small_stmt (';' small_stmt)* [';'] NEWLINE |  expr_stmt (';' | enter )
-small_stmt: (del_stmt | pass_stmt | flow_stmt |
+simple_stmt: small_stmt (';' small_stmt)* [';'] (NEWLINE | handler_stmt)
+small_stmt: (expr_stmt | del_stmt | pass_stmt | flow_stmt |
              import_stmt | global_stmt | nonlocal_stmt | assert_stmt)
 expr_stmt: testlist_star_expr (annassign | augassign (yield_expr|testlist) |
-                     ('=' (yield_expr|testlist_star_expr))*)
+                     ('=' (yield_expr|testlist_star_expr))*) 
 annassign: ':' test ['=' test]
 testlist_star_expr: (test|star_expr) (',' (test|star_expr))* [',']
 augassign: ('+=' | '-=' | '*=' | '@=' | '/=' | '%=' | '&=' | '|=' | '^=' |
@@ -67,7 +68,7 @@ global_stmt: 'global' NAME (',' NAME)*
 nonlocal_stmt: 'nonlocal' NAME (',' NAME)*
 assert_stmt: 'assert' test [',' test]
 
-compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt
+compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt | handler_stmt
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt)
 if_stmt: 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
 while_stmt: 'while' test ':' suite ['else' ':' suite]
@@ -83,10 +84,11 @@ with_item: test ['as' expr]
 except_clause: 'except' [test ['as' NAME]]
 suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 
-test: (or_test ['if' or_test 'else' [shift_enter] test] | lambdef) [handler]
+test: or_test ['if' or_test 'else' [NEWLINE [INDENT]] test] | lambdef
 test_nocond: or_test | lambdef_nocond
-lambdef: 'lambda' [varargslist] ':' test
-lambdef_nocond: 'lambda' [varargslist] ':' test_nocond
+lambdef: 'lambda' [varargslist] ':' test | lambdef_head [typedargslist] 'def' test | '.' [typedargslist] '->' test
+lambdef_head: 'as' ['-' 'with']
+lambdef_nocond: 'lambda' [varargslist] ':' test_nocond | lambdef_head [typedargslist] 'def' test_nocond | '.' [typedargslist] '->' test_nocond
 or_test: and_test ('or' and_test)*
 and_test: not_test ('and' not_test)*
 not_test: 'not' not_test | comparison
@@ -148,10 +150,8 @@ encoding_decl: NAME
 yield_expr: 'yield' [yield_arg]
 yield_arg: 'from' test | testlist
 
-handler: where_expr
-where_expr: 'where' ':' shift_enter 'with' '-' 'in' suite 'with' 
-shift_enter:NEWLINE INDENT
-enter:NEWLINE [DEDENT]
+
+
 
 
 

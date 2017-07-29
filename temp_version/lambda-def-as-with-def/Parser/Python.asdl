@@ -26,10 +26,10 @@ module Python
           | Return(expr? value)
 
           | Delete(expr* targets)
-          | Assign(expr* targets, expr value)
-          | AugAssign(expr target, operator op, expr value)
+          | Assign(expr* targets, expr value, stmt* handler)
+          | AugAssign(expr target, operator op, expr value, stmt* handler)
           -- 'simple' indicates that we annotate simple name without parens
-          | AnnAssign(expr target, expr annotation, expr? value, int simple)
+          | AnnAssign(expr target, expr annotation, expr? value, int simple, stmt* handler)
 
           -- use 'orelse' because else is a keyword in target languages
           | For(expr target, expr iter, stmt* body, stmt* orelse)
@@ -48,7 +48,7 @@ module Python
 
           | Global(identifier* names)
           | Nonlocal(identifier* names)
-          | Expr(expr value)
+          | Expr(expr value, stmt* handler)
           | Pass | Break | Continue
 
           -- XXX Jython will be different
@@ -91,7 +91,6 @@ module Python
          | Name(identifier id, expr_context ctx)
          | List(expr* elts, expr_context ctx)
          | Tuple(expr* elts, expr_context ctx)
-         | Where(expr target, stmt* body)
 
           -- col_offset is the byte offset in the utf8 string the parser uses
           attributes (int lineno, int col_offset)

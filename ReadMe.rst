@@ -56,6 +56,36 @@ See the following codes:
         S_side = C * h where:
             C = 2*pi*r
 
+And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
+
+.. code:: flowpy
+
+    # multi-row lambda in python
+    
+    lambda x:  someFunc(x) where:
+        def someFunc(var):
+            pass
+    
+
+However, in Flowpython, there are some other way more interesting to define a "lambda" than **lambda x: f(x)"  supplied:
+
+.. code:: flowpy
+
+    # Lambda
+
+    lambda x,y,z : lambda a,b,c : x*a + y*b + z*c
+    # which is equals to 
+    .x,y,z -> .a,b,c ->  x*a + y*b + z*c
+    # which is equals to 
+    as-with x,y,z def as a,b,c def x*a + y*b + z*c
+
+    #look at this example:
+    as-with x def as y def as z def x+y+z
+    # which is equals to 
+    as-with x def as-with y def as-with z def x+y+z
+
+
+
 
 Revision
 ------------
@@ -68,26 +98,34 @@ Revision
 
 - date: 2017-7-29
     * **test if else test**
+        * make a change to support like
+        
+            .. code:: flowpy
 
-    make a change to support like
-
-    .. code:: flowpy
-
-        ret  =  e1 if j1 else
-                e2 if j2 else
-                e3 
+            ret  =  e1 if j1 else
+                    e2 if j2 else
+                    e3 
     
-    instead of
+        instead of
 
-    .. code:: flowpy
+        .. code:: flowpy
 
-        ret  =  e1 if j1 else \
-                e2 if j2 else \
-                e3 
+            ret  =  e1 if j1 else \
+                    e2 if j2 else \
+                    e3 
 
     * **where** syntax 
+        * **with-in-with-def** => **where - syntax**
 
-    **with-in-with-def** => **where - syntax**
+    * **lambda**
+        * add two new methods to define "lambda".
+
+        .. code:: flowpy
+
+             .x -> x+1
+             as-with x def x+1
+             as-with x def as y def x+y
+
 
 
 How To Get FlowPy

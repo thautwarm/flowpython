@@ -21,7 +21,8 @@ modules={
     'symtable':'Python/symtable.c',
     'parser':'Parser/Python.asdl',
     'grammar':'Grammar/Grammar',
-    'compile':'Python/compile.c'
+    'compile':'Python/compile.c',
+    'acceler':'Parser/acceler.c'
 }
 # =====================
 
