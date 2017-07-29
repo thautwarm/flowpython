@@ -149,6 +149,14 @@ And then you should have a CPython distribution like Python-3.6.2, like:
 
 And then you should replace the files of the standard CPython distribution with Flowpython.
 
+If you change the variable of **pythonDistPath** in the file **config.py** with  the path of your Python distribution, 
+
+just run this command:
+
+.. code:: shell
+
+    ./conf commit -v try_flowPython
+
 Everyting about Flowpython can be found in the directory "/flowpy".
 
 Finally open the CMD/Terminal at the root of CPython distribution,
