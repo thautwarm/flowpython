@@ -140,7 +140,8 @@ It assembled the following modules:
     - debug&unittest
 
 It can be used like these way:
-    .. code:: shell
+.. code:: shell
+
         ./conf commit -v <version_name>
         ./conf recover 
         ./conf debug -f test_where
