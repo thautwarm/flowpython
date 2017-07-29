@@ -120,7 +120,7 @@ Revision
     * **lambda**
         * add two new methods to define "lambda".
 
-        .. code:: flowpy
+        .. code:: python
 
              .x -> x+1
              as-with x def x+1
