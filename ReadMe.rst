@@ -172,6 +172,14 @@ run the following commands:
     make
     ./python
 
+If you change the variable of **pythonDistPath** in the file **config.py** with  the path of your Python distribution, 
+
+just run this command:
+
+.. code:: shell
+
+    ./conf make -m all
+    
 And then you can enjoy Flowpython!
 
 
