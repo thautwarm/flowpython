@@ -26,7 +26,7 @@ Grammar
 
 * where syntax
 
-.. code:: flowpy
+.. code:: python
 
     (test) where:
         statements
@@ -44,7 +44,7 @@ but it should be **located at the end**.
 
 See the following codes:
 
-.. code:: flowpy
+.. code:: python
 
     # 圆柱面积 / surface area of a cylinder 
     from math import pi
@@ -58,7 +58,7 @@ See the following codes:
 
 And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
 
-.. code:: flowpy
+.. code:: python
 
     # multi-row lambda in python
     
@@ -69,7 +69,7 @@ And where syntax makes it possible for **Lambda** in Python to do everything **d
 
 However, in Flowpython, there are some other way more interesting to define a "lambda" than **lambda x: f(x)"  supplied:
 
-.. code:: flowpy
+.. code:: python
 
     # Lambda
 
