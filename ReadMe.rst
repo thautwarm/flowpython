@@ -1,4 +1,5 @@
-
+.. image:: https://img.shields.io/badge/license-MIT-blue.svg
+    :target: https://github.com/thautwarm/flowpython/blob/master/LICENSE
 
 Additional Grammar Compatible to CPython 
 ==========================================
