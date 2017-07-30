@@ -92,6 +92,7 @@ However, in Flowpython, there are some other way more interesting supplied to de
 Revision
 ------------
 
+More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md>`_  here.
 
 - date: 2017-07-28
     * **where**  syntax 
