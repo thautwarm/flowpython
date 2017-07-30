@@ -81,6 +81,7 @@ However, in Flowpython, there are some other way more interesting supplied to de
     as-with x,y,z def as a,b,c def x*a + y*b + z*c
 
     #look at this example:
+    
     as-with x def as y def as z def x+y+z
     # which equals to 
     as-with x def as-with y def as-with z def x+y+z
