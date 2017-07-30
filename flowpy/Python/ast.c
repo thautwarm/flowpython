@@ -1744,15 +1744,18 @@ ast_for_ifexpr(struct compiling *c, const node *n)
 {
     /* test: or_test 'if' or_test 'else' test */
     expr_ty expression, body, orelse;
-
-    assert(NCH(n) == 5);
+    int children_num = NCH(n);
+    int typeof_idx4 = TYPE(CHILD(n,4));
+    assert( (children_num == 5 && typeof_idx4 == test )  
+          ||(children_num == 6 && typeof_idx4 == NEWLINE)
+          ||(children_num == 7 && typeof_idx4 == INDENT) );
     body = ast_for_expr(c, CHILD(n, 0));
     if (!body)
         return NULL;
     expression = ast_for_expr(c, CHILD(n, 2));
     if (!expression)
         return NULL;
-    orelse = ast_for_expr(c, CHILD(n, 4));
+    orelse = ast_for_expr(c, CHILD(n, children_num-1));
     if (!orelse)
         return NULL;
     return IfExp(expression, body, orelse, LINENO(n), n->n_col_offset,
@@ -2892,7 +2895,7 @@ ast_for_testlist(struct compiling *c, const node* n)
 }
 
 static stmt_ty
-ast_for_expr_stmt(struct compiling *c, const node *n)
+ast_for_expr_stmt(struct compiling *c, const node *n, asdl_seq* where_handler)
 {
     REQ(n, expr_stmt);
     /* expr_stmt: testlist_star_expr (annassign | augassign (yield_expr|testlist) |
