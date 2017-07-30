@@ -36,7 +36,6 @@ vfpdef: NAME
 
 
 stmt: simple_stmt | compound_stmt
-where_handler_stmt:'where' ':' suite
 simple_stmt: small_stmt (';' small_stmt)* [';'] (NEWLINE | where_handler_stmt)
 small_stmt: (expr_stmt | del_stmt | pass_stmt | flow_stmt |
              import_stmt | global_stmt | nonlocal_stmt | assert_stmt)
@@ -85,7 +84,7 @@ with_item: test ['as' expr]
 except_clause: 'except' [test ['as' NAME]]
 suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 
-test: or_test ['if' or_test 'else' test] | lambdef
+test: or_test ['if' or_test 'else' [NEWLINE [INDENT]] test] | lambdef
 test_nocond: or_test | lambdef_nocond
 lambdef: 'lambda' [varargslist] ':' test
 lambdef_nocond: 'lambda' [varargslist] ':' test_nocond
@@ -149,6 +148,7 @@ encoding_decl: NAME
 
 yield_expr: 'yield' [yield_arg]
 yield_arg: 'from' test | testlist
+where_handler_stmt:'where' ':' suite
 
 
 

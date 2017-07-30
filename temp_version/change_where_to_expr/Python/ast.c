@@ -1744,15 +1744,18 @@ ast_for_ifexpr(struct compiling *c, const node *n)
 {
     /* test: or_test 'if' or_test 'else' test */
     expr_ty expression, body, orelse;
-
-    assert(NCH(n) == 5);
+    int children_num = NCH(n);
+    int typeof_idx4 = TYPE(CHILD(n,4));
+    assert( (children_num == 5 && typeof_idx4 == test )  
+          ||(children_num == 6 && typeof_idx4 == NEWLINE)
+          ||(children_num == 7 && typeof_idx4 == INDENT) );
     body = ast_for_expr(c, CHILD(n, 0));
     if (!body)
         return NULL;
     expression = ast_for_expr(c, CHILD(n, 2));
     if (!expression)
         return NULL;
-    orelse = ast_for_expr(c, CHILD(n, 4));
+    orelse = ast_for_expr(c, CHILD(n, children_num-1));
     if (!orelse)
         return NULL;
     return IfExp(expression, body, orelse, LINENO(n), n->n_col_offset,
@@ -2892,7 +2895,7 @@ ast_for_testlist(struct compiling *c, const node* n)
 }
 
 static stmt_ty
-ast_for_expr_stmt(struct compiling *c, const node *n)
+ast_for_expr_stmt(struct compiling *c, const node *n, asdl_seq* where_handler)
 {
     REQ(n, expr_stmt);
     /* expr_stmt: testlist_star_expr (annassign | augassign (yield_expr|testlist) |
@@ -2908,7 +2911,8 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
         expr_ty e = ast_for_testlist(c, CHILD(n, 0));
         if (!e)
             return NULL;
-
+        if (where_handler)
+            e = Where(e, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
         return Expr(e, LINENO(n), n->n_col_offset, c->c_arena);
     }
     else if (TYPE(CHILD(n, 1)) == augassign) {
@@ -2946,7 +2950,8 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
         newoperator = ast_for_augassign(c, CHILD(n, 1));
         if (!newoperator)
             return NULL;
-
+        if (where_handler)
+            expr2 = Where(expr2, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
         return AugAssign(expr1, newoperator, expr2, LINENO(n), n->n_col_offset, c->c_arena);
     }
     else if (TYPE(CHILD(n, 1)) == annassign) {
@@ -3015,6 +3020,8 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
             if (!expr3) {
                 return NULL;
             }
+            if (where_handler) 
+                expr3 = Where(expr3, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
             return AnnAssign(expr1, expr2, expr3, simple,
                              LINENO(n), n->n_col_offset, c->c_arena);
         }
@@ -3054,6 +3061,8 @@ ast_for_expr_stmt(struct compiling *c, const node *n)
             expression = ast_for_expr(c, value);
         if (!expression)
             return NULL;
+        if (where_handler) 
+            expression = Where(expression, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
         return Assign(targets, expression, LINENO(n), n->n_col_offset, c->c_arena);
     }
 }
@@ -3097,7 +3106,7 @@ ast_for_del_stmt(struct compiling *c, const node *n)
 }
 
 static stmt_ty
-ast_for_flow_stmt(struct compiling *c, const node *n)
+ast_for_flow_stmt(struct compiling *c, const node *n, asdl_seq *where_handler)
 {
     /*
       flow_stmt: break_stmt | continue_stmt | return_stmt | raise_stmt
@@ -3122,15 +3131,20 @@ ast_for_flow_stmt(struct compiling *c, const node *n)
             expr_ty exp = ast_for_expr(c, CHILD(ch, 0));
             if (!exp)
                 return NULL;
+            if (where_handler)
+                exp = Where(exp, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
             return Expr(exp, LINENO(n), n->n_col_offset, c->c_arena);
         }
         case return_stmt:
             if (NCH(ch) == 1)
+
                 return Return(NULL, LINENO(n), n->n_col_offset, c->c_arena);
             else {
                 expr_ty expression = ast_for_testlist(c, CHILD(ch, 1));
                 if (!expression)
                     return NULL;
+                if (where_handler)
+                    expression = Where(expression, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
                 return Return(expression, LINENO(n), n->n_col_offset, c->c_arena);
             }
         case raise_stmt:
@@ -3141,6 +3155,8 @@ ast_for_flow_stmt(struct compiling *c, const node *n)
                 expr_ty expression = ast_for_expr(c, CHILD(ch, 1));
                 if (!expression)
                     return NULL;
+                if (where_handler)
+                    expression = Where(expression, where_handler,LINENO(n), n->n_col_offset, c->c_arena);
                 if (NCH(ch) == 4) {
                     cause = ast_for_expr(c, CHILD(ch, 3));
                     if (!cause)
@@ -3430,7 +3446,7 @@ ast_for_nonlocal_stmt(struct compiling *c, const node *n)
 }
 
 static stmt_ty
-ast_for_assert_stmt(struct compiling *c, const node *n)
+ast_for_assert_stmt(struct compiling *c, const node *n, asdl_seq *where_handler)
 {
     /* assert_stmt: 'assert' test [',' test] */
     REQ(n, assert_stmt);
@@ -3438,6 +3454,8 @@ ast_for_assert_stmt(struct compiling *c, const node *n)
         expr_ty expression = ast_for_expr(c, CHILD(n, 1));
         if (!expression)
             return NULL;
+        if (where_handler)
+            expression = Where(expression, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
         return Assert(expression, NULL, LINENO(n), n->n_col_offset, c->c_arena);
     }
     else if (NCH(n) == 4) {
@@ -3446,10 +3464,12 @@ ast_for_assert_stmt(struct compiling *c, const node *n)
         expr1 = ast_for_expr(c, CHILD(n, 1));
         if (!expr1)
             return NULL;
+        if (where_handler)
+            expr1 = Where(expr1, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
+
         expr2 = ast_for_expr(c, CHILD(n, 3));
         if (!expr2)
             return NULL;
-
         return Assert(expr1, expr2, LINENO(n), n->n_col_offset, c->c_arena);
     }
     PyErr_Format(PyExc_SystemError,
@@ -3971,7 +3991,7 @@ ast_for_stmt(struct compiling *c, const node *n)
         assert(NCH(n) == 1);
         n = CHILD(n, 0);
     }
-    asdl_seq *where_handler;
+    asdl_seq *where_handler = NULL;
     if (TYPE(n) == simple_stmt) {
         assert(num_stmts(n) == 1);
         if (TYPE(CHILD(n , NCH(n)-1)) == where_handler_stmt  )
