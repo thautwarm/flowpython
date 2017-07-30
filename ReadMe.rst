@@ -75,9 +75,9 @@ However, in Flowpython, there are some other way more interesting supplied to de
     # Lambda
 
     lambda x,y,z : lambda a,b,c : x*a + y*b + z*c
-    # which is equals to 
+    # which equals to 
     .x,y,z -> .a,b,c ->  x*a + y*b + z*c
-    # which is equals to 
+    # which equals to 
     as-with x,y,z def as a,b,c def x*a + y*b + z*c
 
     #look at this example:
