@@ -22,7 +22,7 @@ modules={
     'parser':'Parser/Python.asdl',
     'grammar':'Grammar/Grammar',
     'compile':'Python/compile.c',
-    'acceler':'Parser/acceler.c'
+    # 'acceler':'Parser/acceler.c'
 }
 # =====================
 
