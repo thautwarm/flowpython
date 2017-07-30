@@ -82,7 +82,7 @@ However, in Flowpython, there are some other way more interesting supplied to de
 
     #look at this example:
     as-with x def as y def as z def x+y+z
-    # which is equals to 
+    # which equals to 
     as-with x def as-with y def as-with z def x+y+z
 
 
