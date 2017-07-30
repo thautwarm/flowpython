@@ -30,7 +30,7 @@
                 If your want to get a complete knowledge about how Python works, you should understand how the two C Module works firstly.
 
 - *2017-07-30*
-    - Particularly, fixed **where** syntax for *lambda*, to make the cope of statements in *where* syntax to be the closure of *lambda*.  
+    - Particularly, fixed **where** syntax for *lambda*, to make the **scope** of statements in *where* syntax to be the **closure of the innermost lambda**.  
     You can write following codes:
     ```python
     as-with x def as y def as z def ret_value where:
