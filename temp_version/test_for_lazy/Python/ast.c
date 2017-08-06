@@ -11,32 +11,6 @@
 
 #include <assert.h>
 
-#ifdef Py_DEBUG
-void childrenprint(node* n,int col){
-    int c_num  = NCH(n);
-    int i;
-    if (c_num == 0)
-        {
-        
-        for(i=0; i<col ;++i)
-            printf("   ");
-        printf(" (%s %d) ", n->n_str, n->n_type);
-        printf("\n");
-        }
-    else{
-        
-        for(i=0; i<col ;++i)
-            printf("   ");
-        printf(" (%s %d) ", n->n_str, n->n_type);
-        printf("\n");
-
-        for(i=0; i<c_num ; ++i){
-            childrenprint(CHILD(n, i), col+1);
-        }
-    }
-}
-#endif
-
 static int validate_stmts(asdl_seq *);
 static int validate_exprs(asdl_seq *, expr_context_ty, int);
 static int validate_nonempty_seq(asdl_seq *, const char *, const char *);
@@ -631,6 +605,7 @@ static stmt_ty ast_for_for_stmt(struct compiling *, const node *, int);
 
 /* Note different signature for ast_for_call */
 static expr_ty ast_for_call(struct compiling *, const node *, expr_ty);
+
 static PyObject *parsenumber(struct compiling *, const char *);
 static expr_ty parsestrplus(struct compiling *, const node *n);
 
@@ -3570,6 +3545,47 @@ ast_for_suite(struct compiling *c, const node *n)
 }
 
 static stmt_ty
+ast_for_case_stmt(struct compiling *c, const node *n)
+{
+    expr_ty expression;
+    asdl_seq *suite_seq;
+    expression = ast_for_expr(c, CHILD(n, 1));
+    if (!expression)
+        return NULL;
+    suite_seq = ast_for_suite(c, CHILD(n, 3));
+    if (!suite_seq)
+        return NULL;
+    return Case(expression, suite_seq, LINENO(n), n->n_col_offset,
+                  c->c_arena);
+}
+
+static stmt_ty
+ast_for_case_suite(struct compiling *c, const node *n)
+{
+    int cases_num, tmp = 0;
+    stmt_ty each_case;
+    node* ch;
+
+    expr_ty expression;
+    expression = ast_for_expr(c, CHILD(n, 1));
+    if (!expression)
+        return NULL;
+    asdl_seq *cases;
+    cases_num = NCH(n) - 6;
+    cases = _Py_asdl_seq_new(cases_num,c->c_arena);
+    int i;
+    for(i=5; i<5+cases_num ; ++i){
+        ch = CHILD(n, i);
+        each_case = ast_for_case_stmt(c, ch);
+        if (!each_case)
+            return NULL;
+        asdl_seq_SET(cases, tmp++, each_case); 
+    }
+    assert(tmp == case->size);
+    return 
+}
+
+static stmt_ty
 ast_for_if_stmt(struct compiling *c, const node *n)
 {
     /* if_stmt: 'if' test ':' suite ('elif' test ':' suite)*
@@ -3687,80 +3703,6 @@ ast_for_if_stmt(struct compiling *c, const node *n)
     PyErr_Format(PyExc_SystemError,
                  "unexpected token in 'if' statement: %s", s);
     return NULL;
-}
-
-static stmt_ty
-ast_for_switch_stmt(struct compiling *c, const node *n)
-{
-
-    expr_ty target;
-    target = ast_for_expr(c, CHILD(n,1));
-    if (!target)
-        return NULL;
-    asdl_seq *cases;
-    int i, has_otherwise, case_end;
-    case_end = NCH(n);
-    if ( TYPE(CHILD(n, case_end-2)) == otherwise_stmt ){
-        case_end = case_end - 2;
-        has_otherwise = 1;
-    }
-    else{
-        case_end = case_end - 1;
-        has_otherwise = 0;
-    }
-    node *branch;
-    expr_ty judge;
-
-    cmpop_ty _op;
-    asdl_int_seq *ops;
-    expr_ty _cmp;
-    asdl_seq *cmps;
-    asdl_seq *case_body = NULL;
-    asdl_seq *otherwise_body = NULL;
-
-    stmt_ty res = NULL;
-
-    if (has_otherwise){
-        branch = CHILD(n, case_end);
-        otherwise_body = ast_for_suite(c, CHILD(branch, 2));
-        if (!otherwise_body)
-            return NULL;
-    }
-
-    for(i = case_end-1; i>=5 ;--i){
-        branch = CHILD(n, i);
-
-        _op = Eq;
-        ops = _Py_asdl_int_seq_new(1, c->c_arena);
-        asdl_seq_SET(ops, 0, _op);
-
-        
-        _cmp = ast_for_expr(c, CHILD(branch,1) );
-        if (!_cmp)
-            return NULL;
-        cmps = _Py_asdl_int_seq_new(1, c->c_arena);
-        asdl_seq_SET(cmps, 0, _cmp);
-
-        judge = Compare(target, ops, cmps, LINENO(branch),
-                               branch->n_col_offset, c->c_arena);
-        case_body = ast_for_suite(c, CHILD(branch, 3) );
-
-
-        if (!res)
-            res = If(judge, case_body, otherwise_body, LINENO(branch),
-                               branch->n_col_offset, c->c_arena);
-        else
-        {
-            otherwise_body = _Py_asdl_seq_new(1, c->c_arena);
-            if (!otherwise_body)
-                return NULL;
-            asdl_seq_SET(otherwise_body, 0, res);
-            res = If(judge, case_body, otherwise_body, LINENO(branch),
-                               branch->n_col_offset, c->c_arena);
-        }
-    }
-    assert(res != NULL);
-    return res;
 }
 
 static stmt_ty
@@ -4021,8 +3963,6 @@ ast_for_with_stmt(struct compiling *c, const node *n, int is_async)
         return With(items, body, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
-
-
 static stmt_ty
 ast_for_classdef(struct compiling *c, const node *n, asdl_seq *decorator_seq)
 {
@@ -4085,6 +4025,7 @@ ast_for_classdef(struct compiling *c, const node *n, asdl_seq *decorator_seq)
                     decorator_seq, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
+
 static stmt_ty
 ast_for_stmt(struct compiling *c, const node *n)
 {
@@ -4139,8 +4080,6 @@ ast_for_stmt(struct compiling *c, const node *n)
         node *ch = CHILD(n, 0);
         REQ(n, compound_stmt);
         switch (TYPE(ch)) {
-            case switch_stmt:
-                return ast_for_switch_stmt(c, ch);
             case if_stmt:
                 return ast_for_if_stmt(c, ch);
             case while_stmt:
@@ -4159,6 +4098,8 @@ ast_for_stmt(struct compiling *c, const node *n)
                 return ast_for_decorated(c, ch);
             case async_stmt:
                 return ast_for_async_stmt(c, ch);
+            case case_suite:
+                return ast_for_case(c,ch);
             default:
                 PyErr_Format(PyExc_SystemError,
                              "unhandled small_stmt: TYPE=%d NCH=%d\n",
@@ -5335,5 +5276,3 @@ error:
     FstringParser_Dealloc(&state);
     return NULL;
 }
-
-

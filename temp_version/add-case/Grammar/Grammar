@@ -68,12 +68,9 @@ global_stmt: 'global' NAME (',' NAME)*
 nonlocal_stmt: 'nonlocal' NAME (',' NAME)*
 assert_stmt: 'assert' test [',' test]
 
-compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt | where_handler_stmt | switch_stmt
+compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt | where_handler_stmt
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt)
 if_stmt: 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
-switch_stmt: 'switch' test ':' NEWLINE INDENT case_stmt* otherwise_stmt*  DEDENT
-case_stmt: 'case' test ':' suite
-otherwise_stmt: 'otherwise' ':' suite
 while_stmt: 'while' test ':' suite ['else' ':' suite]
 for_stmt: 'for' exprlist 'in' testlist ':' suite ['else' ':' suite]
 try_stmt: ('try' ':' suite
@@ -87,6 +84,7 @@ with_item: test ['as' expr]
 except_clause: 'except' [test ['as' NAME]]
 suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 
+case_test: 'case' test '=' '>' test
 test: or_test ['if' or_test 'else' [NEWLINE [INDENT]] test] | lambdef
 test_nocond: or_test | lambdef_nocond
 lambdef: 'lambda' [varargslist] ':' test | lambdef_head [typedargslist] 'def' test | '.' [typedargslist] '->' test

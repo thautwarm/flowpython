@@ -71,7 +71,7 @@ assert_stmt: 'assert' test [',' test]
 compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt | where_handler_stmt | switch_stmt
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt)
 if_stmt: 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
-switch_stmt: 'switch' test ':' NEWLINE INDENT case_stmt* otherwise_stmt*  DEDENT
+switch_stmt: 'switch' test ':' NEWLINE INDENT case_stmt* otherwise_stmt  DEDENT
 case_stmt: 'case' test ':' suite
 otherwise_stmt: 'otherwise' ':' suite
 while_stmt: 'while' test ':' suite ['else' ':' suite]

@@ -32,7 +32,7 @@ make_args={
     'clear':'make distclean',
     'grammar':'make regen-grammar',
     'ast':'make regen-ast',
-    'all':['clean','reconf','grammar','ast']
+    'all':['clear','reconf','grammar','ast']
 }
 
 
