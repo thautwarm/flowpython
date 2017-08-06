@@ -153,9 +153,8 @@ How To Get FlowPy
 --------------
 
 **For Windows User**
-    - You'd better use Visual Studio to make the Python project, 
-    It must be the easiest thing in the world, I think.
-
+    - You'd better use Visual Studio to make the Python project, and it must be the easiest thing in the world, I think.
+    
     - I have tried with **Cygwin** but finally failed. 
 
 **For Unix User**
