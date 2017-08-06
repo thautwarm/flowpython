@@ -28,6 +28,7 @@
             
             - P.S for *Compile&Interpret*  
                 If your want to get a complete knowledge about how Python works, you should understand how the two C Module works firstly.
+    
 
 - *2017-07-30*
     - Particularly, fixed **where** syntax for *lambda*, to make the **scope** of statements in *where* syntax to be the **closure of the innermost lambda**.  
@@ -48,6 +49,36 @@
     .x->.y->.z-> ret where:
         ret = x +y +z
     ```
+- *2017-08-06*
+    - To give some support for Pattern Matching to Python.
+    - principle:
+
+        the principle of following codes 
+        ```C  
+        switch (this):
+            case <case1> : 
+                ...
+            case <case2> :
+                ...
+            ...
+            otherwise:
+                ...
+        ```
+        works similar to
+        ```python
+        if this == <case1>:
+            ...
+        else:
+            if this == <case2>:
+                ...
+            else:
+                ...
+                else:
+                    ...
+        ```
+        Finally, I'd like to tell you that, in Python,
+        the **ast** of **if-elif-else** will be transformed to that of **if-else-[if-else]**, which I don't think to be a good way to generate **ast**. 
+
 
 
 

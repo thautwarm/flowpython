@@ -99,7 +99,7 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 
     **with-in-with-def** => **with-in-with-break**
 
-- date: 2017-7-29
+- date: 2017-07-29
     * **test if else test**
         * make a change to support like
         
@@ -129,10 +129,36 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
              as-with x def x+1
              as-with x def as y def x+y
 
+- date: 2017-08-06
+    * **switch-case-otherwise**
+
+    .. code:: python
+        
+        x = (1,2,3)
+
+        switch x:
+            case (1) :
+                ...
+                assert(False)
+            case (1,2):
+                ...
+                assert(False)
+            otherwise:
+                ...
+                assert(x == (1,2,3))
+
 
 
 How To Get FlowPy
 --------------
+
+**For Windows User**
+    - You'd better use Visual Studio to make the Python project, 
+    It must be the easiest thing in the world, I think.
+
+    - I have tried with **Cygwin** but finally failed. 
+
+**For Unix User**
 
 Firstly, you should have a C/C++ compiler like: 
     
@@ -142,7 +168,7 @@ Firstly, you should have a C/C++ compiler like:
 
 To give some advice, you can easily get C/C++ compiler with    
     
-    - **MinGW/Cygwin** on **windows**
+    - **MinGW/Cygwin** on **windows** (Failed, please have a try with Visual Studio)
 
     - **sudo apt-get install gcc/clang** on **Ubuntu/Debian/Deepin** (maybe it also works for MacOS).
 
