@@ -150,7 +150,7 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 - date: 2017-08-07
     * **fix-keyword**
     * **switch-case-otherwise -> condic-case-otherwise**
-    * See :ref :`fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#fix-keyword>`
+    * See :ref :`fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#fix-keyword>`_
 
 
 
