@@ -1,10 +1,10 @@
 # **History**
 
 ## Feature - List
-- [Add-where-syntax](###add-where-syntax)
-- [Fix-lambda-closure](###fix-where-syntax-in-lambda-closure)
-- [Add-switch-syntax](###add-switch-syntax)
-- [Fix-keyword-conflictions](###fix-keyword-conflictions)
+- [Add-where-syntax](#add-where-syntax)
+- [Fix-lambda-closure](#fix-where-syntax-in-lambda-closure)
+- [Add-switch-syntax](#add-switch-syntax)
+- [Fix-keyword-conflictions](#fix-keyword-conflictions)
 
 ----
 
