@@ -80,6 +80,37 @@
         the **ast** of **if-elif-else** will be transformed to that of **if-else-[if-else]**, which I don't think to be a good way to generate **ast**. 
 
 
+- date: 2017-08-07
+    * **fix-keyword**
+    * **switch-case-otherwise -> condic-case-otherwise**
+
+    Some new keywords brought by FlowPy, such as **where, switch, case, otherwise**, used to conflict with **Standard Library**
+    and some important Libaraies from **Third Party**.
+
+    I fixed these conflictions with making the Parser module to ignore some grammar structures which would be checked in AST module.   
+
+    So you can write these codes now:
+
+    ```python
+        # no confliction
+        
+        where = 1
+        a = ret where:
+            ret = where
+        
+        case = 1
+        otherwise = 2
+        condic 1:
+            case case => case 
+            otherwise => otherwise
+    ```
+
+    Take care that **where, case, otherwise** are not real keywords, and **condic** is.
+
+    ```python
+        condic = 1
+        >>> SyntaxError: invalid syntax
+    ```
 
 
 

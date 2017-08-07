@@ -147,6 +147,11 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
                 ...
                 assert(x == (1,2,3))
 
+- date: 2017-08-07
+    * **fix-keyword**
+    * **switch-case-otherwise -> condic-case-otherwise**
+    * See `Distribution History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md>`_
+
 
 
 How To Get FlowPy
