@@ -11,6 +11,8 @@
 
 #include <assert.h>
 
+#define FLOWPY_SIGN(n) (STR(CHILD(CHILD((n) ,0), 2)))
+
 #ifdef Py_DEBUG
 void childrenprint(node* n,int col){
     int c_num  = NCH(n);
@@ -3716,19 +3718,28 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
     asdl_seq *cmps;
     asdl_seq *case_body = NULL;
     asdl_seq *otherwise_body = NULL;
-
+    
     stmt_ty res = NULL;
 
     if (has_otherwise){
         branch = CHILD(n, case_end);
-        otherwise_body = ast_for_suite(c, CHILD(branch, 2));
+        if (strcmp(STR(CHILD(branch, 0)), "otherwise")){
+            PyErr_Format(PyExc_SystemError,
+                                "KeywordError in Flowpy Gammar: 'otherwise' != '%s' !!", STR(CHILD(branch, 0)) );
+            return NULL;
+        }
+        otherwise_body = ast_for_suite(c, CHILD(branch, 3));
         if (!otherwise_body)
             return NULL;
     }
 
     for(i = case_end-1; i>=5 ;--i){
         branch = CHILD(n, i);
-
+        if (strcmp(STR(CHILD(branch, 0)), "case")){
+            PyErr_Format(PyExc_SystemError,
+                                "Keyword Error in Flowpy Gammar: 'case' != '%s' !!", STR(CHILD(branch, 0)) );
+            return NULL;
+        }
         _op = Eq;
         ops = _Py_asdl_int_seq_new(1, c->c_arena);
         asdl_seq_SET(ops, 0, _op);
@@ -3737,12 +3748,12 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         _cmp = ast_for_expr(c, CHILD(branch,1) );
         if (!_cmp)
             return NULL;
-        cmps = _Py_asdl_int_seq_new(1, c->c_arena);
+        cmps = _Py_asdl_seq_new(1, c->c_arena);
         asdl_seq_SET(cmps, 0, _cmp);
 
         judge = Compare(target, ops, cmps, LINENO(branch),
                                branch->n_col_offset, c->c_arena);
-        case_body = ast_for_suite(c, CHILD(branch, 3) );
+        case_body = ast_for_suite(c, CHILD(branch, 4) );
 
 
         if (!res)
@@ -4139,6 +4150,12 @@ ast_for_stmt(struct compiling *c, const node *n)
         REQ(n, compound_stmt);
         switch (TYPE(ch)) {
             case switch_stmt:
+
+                if (strcmp( FLOWPY_SIGN(ch), "match")){
+                    PyErr_Format(PyExc_SystemError,
+                                "Keyword Error in Flowpy Gammar: 'match' != '%s' !! \n", FLOWPY_SIGN(ch));
+                    return NULL;
+                }
                 return ast_for_switch_stmt(c, ch);
             case if_stmt:
                 return ast_for_if_stmt(c, ch);

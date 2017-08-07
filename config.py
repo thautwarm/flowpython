@@ -32,7 +32,8 @@ make_args={
     'clear':'make distclean',
     'grammar':'make regen-grammar',
     'ast':'make regen-ast',
-    'all':['clear','reconf','grammar','ast']
+    'all':['clear','reconf','grammar','ast'],
+    'rev':['grammar','ast']
 }
 
 
@@ -100,7 +101,7 @@ if __name__ == '__main__':
             os.system("make")
         else:
             m = dict_args['m']
-            if m == 'all':
+            if m in ['all','rev']:
                 args = make_args[m]
                 for arg in args:
                     os.system(make_args[arg])

@@ -36,7 +36,7 @@ vfpdef: NAME
 
 
 stmt: simple_stmt | compound_stmt
-simple_stmt: small_stmt ((';' small_stmt)* [';'] NEWLINE | where_handler_stmt)
+simple_stmt: small_stmt (';' small_stmt)* [';'] (NEWLINE | flowpy_sigh_head)
 small_stmt: (expr_stmt | del_stmt | pass_stmt | flow_stmt |
              import_stmt | global_stmt | nonlocal_stmt | assert_stmt)
 expr_stmt: testlist_star_expr (annassign | augassign (yield_expr|testlist) |
@@ -71,7 +71,7 @@ assert_stmt: 'assert' test [',' test]
 compound_stmt: if_stmt | while_stmt | for_stmt | try_stmt | with_stmt | funcdef | classdef | decorated | async_stmt | switch_stmt
 async_stmt: ASYNC (funcdef | with_stmt | for_stmt)
 if_stmt: 'if' test ':' suite ('elif' test ':' suite)* ['else' ':' suite]
-switch_stmt: 'condic' test ':' NEWLINE INDENT case_stmt+ DEDENT
+switch_stmt: flowpy_head test ':' NEWLINE INDENT flowpy_head_multistmt* flowpy_multistmt*  DEDENT
 while_stmt: 'while' test ':' suite ['else' ':' suite]
 for_stmt: 'for' exprlist 'in' testlist ':' suite ['else' ':' suite]
 try_stmt: ('try' ':' suite
@@ -150,11 +150,16 @@ encoding_decl: NAME
 yield_expr: 'yield' [yield_arg]
 yield_arg: 'from' test | testlist
 
-where_handler_stmt: NAME ':' suite
-lambdef_head: 'as' ['-' 'with']
- 
-case_stmt: NAME [test] '=' '>' suite
 
+case_stmt: NAME test ':' suite
+otherwise_stmt: NAME ':' suite
+lambdef_head: 'as'  ['-' 'with']
+
+flowpy_handler_stmt: flowpy_sigh_head ':' suite
+flowpy_sigh_head: ':' ':' NAME  
+
+flowpy_multistmt: NAME ':' suite
+flowpy_head_multistmt: NAME test ':' suite
 
 
 

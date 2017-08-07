@@ -3699,7 +3699,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         return NULL;
     int i, has_otherwise, case_end;
     case_end = NCH(n);
-    if ( TYPE(CHILD(n, case_end-2)) == otherwise_stmt ){
+    if ( TYPE(CHILD(n, case_end-2)) == flowpy_multistmt ){
         case_end = case_end - 2;
         has_otherwise = 1;
     }
@@ -3713,7 +3713,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
     cmpop_ty _op;
     asdl_int_seq *ops;
     expr_ty _cmp;
-    asdl_seq *cmps;
+    asdl_int_seq *cmps;
     asdl_seq *case_body = NULL;
     asdl_seq *otherwise_body = NULL;
 
@@ -4094,9 +4094,17 @@ ast_for_stmt(struct compiling *c, const node *n)
     asdl_seq *where_handler = NULL;
     if (TYPE(n) == simple_stmt) {
         assert(num_stmts(n) == 1);
-        if (TYPE(CHILD(n , NCH(n)-1)) == where_handler_stmt  )
-        {
-            where_handler = ast_for_suite(c, CHILD(CHILD(n, NCH(n)-1), 2));
+        if (TYPE(CHILD(n , NCH(n)-1)) == flowpy_handler_stmt  )
+        {   
+            const node* sigh_head = CHILD(n, NCH(n)-1);
+            char *sign_string = STR( CHILD(CHILD(sigh_head, 0), 2));
+            if ( !strcmp(sign_string, "where") )
+                {
+                    PyErr_Format(PyExc_SystemError,
+                             "Error Syntax in Flowpy Gramamr!\n");
+                    return NULL;
+                }
+            where_handler = ast_for_suite(c, CHILD(sigh_head, 2));
             if (!where_handler)
                 return NULL;
         }
