@@ -80,7 +80,7 @@
         the **ast** of **if-elif-else** will be transformed to that of **if-else-[if-else]**, which I don't think to be a good way to generate **ast**. 
 
 
-- date: 2017-08-07
+- [date: 2017-08-07](#fix-keyword)
     * **fix-keyword**
     * **switch-case-otherwise -> condic-case-otherwise**
 
