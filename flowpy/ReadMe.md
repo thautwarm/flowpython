@@ -1,6 +1,14 @@
 # **History**
 
-- *before 2017-07-30*
+## List
+- [add-where-syntax](#where_syntax)
+- [fix-lambda-closure](#lambda_closure)
+- [add-switch-syntax](#switch)
+- [fix-keyword-conflictions](#fix-keyword)
+
+----
+
+- <span id="where_syntax">before 2017-07-30</span>
     - add **where** syntax
     - principle:
         
@@ -30,7 +38,7 @@
                 If your want to get a complete knowledge about how Python works, you should understand how the two C Module works firstly.
     
 
-- *2017-07-30*
+- <span id="lambda_closure">date: 2017-07-30</span>
     - Particularly, fixed **where** syntax for *lambda*, to make the **scope** of statements in *where* syntax to be the **closure of the innermost lambda**.  
     You can write following codes:
     ```python
@@ -49,7 +57,7 @@
     .x->.y->.z-> ret where:
         ret = x +y +z
     ```
-- *2017-08-06*
+- <span id="switch">date: 2017-08-06</span>
     - To give some support for Pattern Matching to Python.
     - principle:
 
