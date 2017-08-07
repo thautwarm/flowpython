@@ -79,8 +79,7 @@
         Finally, I'd like to tell you that, in Python,
         the **ast** of **if-elif-else** will be transformed to that of **if-else-[if-else]**, which I don't think to be a good way to generate **ast**. 
 
-
-- [date: 2017-08-07](#fix-keyword)
+- <span id="fix-keyword">date: 2017-08-07</span>
     * **fix-keyword**
     * **switch-case-otherwise -> condic-case-otherwise**
 
