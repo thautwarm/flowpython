@@ -116,7 +116,7 @@
             otherwise => otherwise
     ```
 
-    Take care that **where, case, otherwise** are not real keywords, and **condic** is.
+    Take care that each syntax in [ **where, case, otherwise** ] are not real keywords, and **condic** is.
 
     ```python
         condic = 1

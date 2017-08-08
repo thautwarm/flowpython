@@ -154,7 +154,10 @@ where_handler_stmt: NAME ':' suite
 lambdef_head: 'as' ['-' 'with']
  
 case_stmt:  case_head [test [':' test]] '=' '>' suite
-mode_stmt:  '[' [comp_op] ']' | '(' [test] ')' | '{' [test] '}' | '+'  ('[' [comp_op] ']' | '(' [test] ')')
+mode_stmt: '[' [comp_op] ']' | '(' [test] ')' | '{' [test] '}' | '|' [test] ']'
 switch_head : 'condic' [mode_stmt]
 case_head : [mode_stmt] NAME
+
+
+
 

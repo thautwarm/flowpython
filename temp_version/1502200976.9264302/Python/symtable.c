@@ -1383,7 +1383,6 @@ symtable_visit_stmt(struct symtable *st, stmt_ty s)
     VISIT_QUIT(st, 1);
 }
 
-static int
 symtable_curry(struct symtable *st, expr_ty e, asdl_seq* multistatements){
         
         if (!GET_IDENTIFIER(lambda))
