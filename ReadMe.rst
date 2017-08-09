@@ -54,7 +54,7 @@ Grammar
             S_side = C * h where:
                 C = 2*pi*r
 
-And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
+- And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
 
     .. code:: python
 
