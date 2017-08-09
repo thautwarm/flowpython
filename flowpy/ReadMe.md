@@ -163,11 +163,12 @@ fix `if-expr` and add some new ways to define `lambda`.
     ```C
 
         condic [ == ] expr:
-            [>] case test1 =>
+            [>] 
+            case test1 =>
                     <body1>
-            case     test2 => 
+            case test2 => 
                     <body2>
-            otherwise =>
+            otherwise  =>
                     <body3>
     ```
     which equals to 
@@ -199,9 +200,10 @@ fix `if-expr` and add some new ways to define `lambda`.
     2. **callable object matching**
     ```C
     condic (f) expr:
-        case      test1 => 
+        case test1 => 
             <body1>
-        [!=] case test2 =>
+        [!=] 
+        case test2 =>
             <body2>
     ```
     equals
@@ -229,9 +231,10 @@ fix `if-expr` and add some new ways to define `lambda`.
     - This one is the implementation for traditional pattern matching in CPython.
     ```C
     condic +[>] 1:
-        case         a:2   =>
+        case a:2   =>
             <body1>
-        +(type) case a:int =>
+        +(type) 
+        case a:int =>
             <body2>
     ```
     The codes above can be explained as following process:  
@@ -239,6 +242,25 @@ fix `if-expr` and add some new ways to define `lambda`.
     2. `else if` we can do assignment `a = 1` and expression `type(a) == int` can be satisfied, then do `<body2>`.  
     - There are much more ways to use **Pattern Matching**, take a look
     at [**test_patm.py**](https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py)
+    3. **Take care**  
+    if you write the following codes without default mode,
+    ```C
+    condic [1,2,3]:
+        ...
+    condic {1,2,3}:
+        ...
+    condic (1,2,3):
+        ...
+    ```
+    it will lead to **syntax Error**. But you can use this instead:
+    ```C
+    condic() [1,2,3]:
+        ...
+    condic[] {1,2,3}:
+        ...
+    condic{} (1,2,3):
+        ...
+    ```
 
 #### Conclusion for Pattern Matching
 

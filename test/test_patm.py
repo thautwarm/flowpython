@@ -38,7 +38,8 @@ condic +() [1,2,3]:
         assert False, "cannot match"
 
 condic () [1,2,3]:
-    +(type) case a:list =>
+    +(type) 
+    case a:list =>
             print("can do assignment 'a = [1,2,3]' and 'type(a) == list'")
             assert( type(a) == list and a == [1,2,3] )
     otherwise =>
@@ -62,17 +63,15 @@ condic +(tomap(type)) [1,2,3]:
     otherwise =>
             assert False, "+(tomap(type)) case (*a,b):[int]*3 \n cannot match [1,2,3]!"
 
+condic 1:
+        +(.x->2*x)
+        case a:3 => 
+            assert a == 1 and a*2 == 3
+            
+        +[is not]
+        case a:2 =>
+            print("a == 1 and a is not 2")
+            assert a == 1 and a is not 2
 
-if True:
-        condic 1:
-            +(.x->2*x)
-            case a:3 => 
-                assert a == 1 and a*2 == 3
-                
-            +[is not]
-            case a:2 =>
-                print("a == 1 and a is not 2")
-                assert a == 1 and a is not 2
-
-            otherwise =>
-                ...
+        otherwise =>
+            ...

@@ -34,14 +34,13 @@ Grammar
         ...
         # "test" is the top one of expressions in Python Grammar.
 
-    - Take a look at here:
-        the **where** blocks would be **executed before the expression at the head**, 
-        but it should be **located at the end**.
+- Take a look at here:
+    the **where** blocks would be **executed before the expression at the head**, 
+    but it should be **located at the end**.
+- Q :Why did I bring "where" syntax into Python?
+- A :For **combining the expressions and statements** in Python and enhanced the readability of procedure. 
 
-    - Q :Why did I bring "where" syntax into Python?
-    - A :For **combining the expressions and statements** in Python and enhanced the readability of procedure. 
-
-    See the following codes:
+- See the following codes:
 
     .. code:: python
 
@@ -55,7 +54,7 @@ Grammar
             S_side = C * h where:
                 C = 2*pi*r
 
-    And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
+And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
 
     .. code:: python
 
@@ -117,11 +116,7 @@ And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/flo
 
 
             
-        
-
-
-
-
+    
 Revision
 ------------
 
@@ -150,9 +145,10 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 
 - date: 2017-08-09
     * **add-pattern-matching-syntax**
-    * See `fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
+    * See `Powerful Pattern Matching <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
 
-How To Get FlowPy
+
+HowToGetFlowPy
 --------------
 
 **For Windows User**
