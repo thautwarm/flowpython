@@ -89,7 +89,7 @@ However, in Flowpython, there are some other way more interesting supplied to de
         # which equals to 
         as-with x def as-with y def as-with z def x+y+z
 
-And we know that there is some powerful tool in some FP languages, like 
+And we know that there are some powerful tools in some FP languages, like 
 
 * **Pattern matching**
 
