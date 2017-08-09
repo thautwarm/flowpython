@@ -96,19 +96,19 @@ And we know that there are some powerful tools in some FP languages, like
     .. code:: python
 
         condic +[<] 1:
-            case a:2           => 
+            case a:2   => 
                 assert a == 1 and a < 2
             +(.x->type(x))
             case a:int =>
                 assert a == 1 and type(a) == int
         condic 1:
             +(.x->2*x)
-            case a:3 => 
+            case a:3   => 
                 assert a == 1 and a*2 == 3
             +[is not]
-            case a:2 =>
+            case a:2   =>
                 assert a == 1 and a is not 2
-            otherwise =>
+            otherwise  =>
                 ...
         
 More about Pattern Matching to see `TestFile <https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py>`_
