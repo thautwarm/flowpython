@@ -152,7 +152,9 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
     * **switch-case-otherwise -> condic-case-otherwise**
     * See `fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#fix-keyword-conflictions>`_
 
-
+- date: 2017-08-09
+    * **add-pattern-matching-syntax**
+    * See `fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
 
 How To Get FlowPy
 --------------

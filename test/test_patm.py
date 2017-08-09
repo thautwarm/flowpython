@@ -44,6 +44,13 @@ condic () [1,2,3]:
     otherwise =>
         assert False, "cannot match"
 
+condic {.x,y->x+y == 5} 1:
+    case 3 => 
+        assert 1+3 == 5, "1+3 == 5"
+    case 4 =>
+        print("1+4 == 5")
+        assert 1+4 == 5
+
 tomap = .f -> .var -> ret where:
     ret = list(map(f, var))
 

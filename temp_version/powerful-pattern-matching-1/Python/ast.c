@@ -3717,7 +3717,7 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     asdl_seq_SET(to_match_seq, 0, to_match);
     do_assign = Assign(to_match_seq, target, LINENO(n), n->n_col_offset, c->c_arena);
     
-    tmp_name = new_identifier("__PM__", c);
+    tmp_name = new_identifier("_", c);
     if (!tmp_name)
         return NULL;
     tmp_var = Name(tmp_name, Store, LINENO(n), n->n_col_offset, c->c_arena);
@@ -3774,11 +3774,6 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     do_try = Try(try_body, try_handler, NULL, NULL, LINENO(n), n->n_col_offset, c->c_arena);
     where_suite = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(where_suite, 0, do_try);
-
-    // // set context
-    // if (!set_context(c, tmp_var, Store, tmp_node ))
-    //     return NULL;
-
     
     return Where( Name(tmp_name, Load, LINENO(n), n->n_col_offset, c->c_arena)  , where_suite, LINENO(n), n->n_col_offset, c->c_arena);
 }
@@ -3891,7 +3886,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         }
         if (strcmp(STR(tmp), "otherwise")){
             PyErr_Format(PyExc_SystemError,
-                                "Keyword Error in Flowpy Gammar: '%s' should be 'otherwise' !!", STR(tmp));
+                                "Syntax Error in Flowpy Gammar: '%s' should be 'otherwise' !!", STR(tmp));
             return NULL;
         }
         otherwise_body = ast_for_suite(c, CHILD(branch, 3));
@@ -3906,7 +3901,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
             (STR(CHILD(branch, 2))[0] == ':' && NCH(branch) != 7)
             ){
             PyErr_Format(PyExc_SystemError,
-                                "Require an expression to test in Flowpy Gammar: 'case expr => ...' not 'case => ...'  !!");
+                                "Syntax Error in Flowpy Gammar: Require an expression to test, use 'case expr => ...' instead of 'case => ...'  !!");
             return NULL;
         }
         if (NCH(branch) == 7){
@@ -3929,7 +3924,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
            //check the syntax
            if (strcmp(STR(CHILD(tmp, 0)), "case")){
                 PyErr_Format(PyExc_SystemError,
-                                    "Keyword Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
+                                    "Syntax Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
                 return NULL;
             }
         }
@@ -3937,7 +3932,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
             //check the syntax
             if (strcmp(STR(CHILD(tmp, 1)), "case")){
                 PyErr_Format(PyExc_SystemError,
-                                    "Keyword Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
+                                    "Syntax Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
                 return NULL;
             }
             tmp = CHILD(tmp, 0);
@@ -3991,6 +3986,8 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         {
             case PM_MODE:{
                 judge = try_pattern_matching(c, branch, target, _cmp, aug_expr, callfunc_for_each, _op_for_each);
+                if (!judge)
+                    return NULL;
                 break;
             }
             case COMP_MODE:{
@@ -4015,6 +4012,11 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
                 target_seq = _Py_asdl_seq_new(1, c->c_arena);
                 asdl_seq_SET(target_seq, 0, target);
 
+                if (!callfunc_for_each){
+                    PyErr_Format(PyExc_SystemError,
+                            "ValueError in Flowpy Gammar: Require an callable object !!");
+                    return NULL;
+                }
                 aug_expr = Call(callfunc_for_each, target_seq, NULL, LINENO(branch),
                                 branch->n_col_offset, c->c_arena);
                 judge = Compare(aug_expr, ops, cmps, LINENO(branch),
@@ -4022,14 +4024,14 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
                 break;
             }
             case DUAL_MODE:{
-                ops = _Py_asdl_int_seq_new(1, c->c_arena);
-                _op_for_each = Eq;
-                asdl_seq_SET(ops, 0, _op_for_each);
-
                 target_seq = _Py_asdl_seq_new(2, c->c_arena);
                 asdl_seq_SET(target_seq, 0, target);
                 asdl_seq_SET(target_seq, 1, _cmp);
-
+                if (!callfunc_for_each){
+                    PyErr_Format(PyExc_SystemError,
+                            "ValueError in Flowpy Gammar: Require an callable object !!");
+                    return NULL;
+                }
                 judge = Call(callfunc_for_each, target_seq, NULL, LINENO(branch),
                                 branch->n_col_offset, c->c_arena);
                 break;

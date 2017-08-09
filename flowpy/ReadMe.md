@@ -5,6 +5,7 @@
 - [Fix-lambda-closure](#fix-where-syntax-in-lambda-closure)
 - [Add-switch-syntax](#add-switch-syntax)
 - [Fix-keyword-conflictions](#fix-keyword-conflictions)
+- [Powerful-pattern-matching](#powerful-pattern-matching)
 
 ----
 
@@ -122,6 +123,110 @@
         condic = 1
         >>> SyntaxError: invalid syntax
     ```
+
+### Powerful Pattern Matching
+- date: 2017-08-08
+* **pattern-matching**
+
+    There are four kinds of matching rules in Flowpy:
+    1. **comparing operator matching**
+    ```C
+
+        condic [ == ] expr:
+            [>] case test1 =>
+                    <body1>
+            case     test2 => 
+                    <body2>
+            otherwise =>
+                    <body3>
+    ```
+    which equals to 
+    ```python
+
+        if (expr > test1 )
+            <body1>
+        elif (expr == test2 )
+            <body2>
+        else:
+            <body3>
+    ```
+    Each in `[], (), +(), +[], {} ` are called the **operator comparing mode**.     
+    **Giving a mode followed by *condic* keyword means giving a default mode.**  
+    The relus are concluded [here](#conclusion-for-pattern-matching)  
+    
+        for operator comparing mode "[<optional>]"
+        <optional> can be
+        ==      
+        >
+        <
+        >=
+        <=
+        in
+        not in
+        is 
+        is not
+    
+    2. **callable object matching**
+    ```C
+    condic (f) expr:
+        case      test1 => 
+            <body1>
+        [!=] case test2 =>
+            <body2>
+    ```
+    equals
+    ```python
+    if (f(expr) == test1):
+        <body1>
+    elif expr != test2:
+        <body2>
+    ```
+
+    3. **dual callable comparing matching**
+
+    ```C
+    condic {f} expr:
+        case test1 => 
+            <body1>
+    ```
+    equals
+    ```python
+    if f(expr, test1):
+        <body1>
+    ```
+
+    4. **Python Pattern Matching**
+    - This one is the implementation for traditional pattern matching in CPython.
+    ```C
+    condic +[>] 1:
+        case         a:2   =>
+            <body1>
+        +(type) case a:int =>
+            <body2>
+    ```
+    The codes above can be explained as following process:  
+    1. `if` we can do assignment `a = 1` and expression `a > 2` can be satisfied, then do `<body1>`.
+    2. `else if` we can do assignment `a = 1` and expression `type(a) == int` can be satisfied, then do `<body2>`.  
+    - There are much more ways to use **Pattern Matching**, take a look
+    at [**test_patm.py**](https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py)
+
+#### Conclusion for Pattern Matching
+
+| Matching Method                    | Identity      |       
+| -------------                      |:-------------:| 
+| comparing operator matching        | [`operator`]  | 
+| callable object matching           | (`callable`)  | 
+| dual callable comparing matching   | {`callable`}  | 
+| python pattern matching(comparing) | +[`operator`] | 
+| python pattern matching(callable)  | +(`callable`) |          
+
+        
+    
+
+
+
+
+
 
 
 
