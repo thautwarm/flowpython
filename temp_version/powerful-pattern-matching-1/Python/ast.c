@@ -3930,7 +3930,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         }
         else{
             //check the syntax
-            if (strcmp(STR(CHILD(tmp, 1)), "case")){
+            if (strcmp(STR(CHILD(tmp, NCH(tmp)-1)), "case")){
                 PyErr_Format(PyExc_SystemError,
                                     "Syntax Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
                 return NULL;

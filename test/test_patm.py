@@ -63,4 +63,16 @@ condic +(tomap(type)) [1,2,3]:
             assert False, "+(tomap(type)) case (*a,b):[int]*3 \n cannot match [1,2,3]!"
 
 
+if True:
+        condic 1:
+            +(.x->2*x)
+            case a:3 => 
+                assert a == 1 and a*2 == 3
+                
+            +[is not]
+            case a:2 =>
+                print("a == 1 and a is not 2")
+                assert a == 1 and a is not 2
 
+            otherwise =>
+                ...

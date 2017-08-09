@@ -156,5 +156,5 @@ lambdef_head: 'as' ['-' 'with']
 case_stmt:  case_head [test [':' test]] '=' '>' suite
 mode_stmt:  '[' [comp_op] ']' | '(' [test] ')' | '{' [test] '}' | '+'  ('[' [comp_op] ']' | '(' [test] ')')
 switch_head : 'condic' [mode_stmt]
-case_head : [mode_stmt] NAME
+case_head : [mode_stmt [NEWLINE] ] NAME
 

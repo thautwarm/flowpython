@@ -1,6 +1,7 @@
 # **History**
 
 ## Feature - List
+- [Old-Works](#old-works)
 - [Add-where-syntax](#add-where-syntax)
 - [Fix-lambda-closure](#fix-where-syntax-in-lambda-closure)
 - [Add-switch-syntax](#add-switch-syntax)
@@ -8,6 +9,34 @@
 - [Powerful-pattern-matching](#powerful-pattern-matching)
 
 ----
+
+### Old Works
+
+fix `if-expr` and add some new ways to define `lambda`.
+
+- `if-expr`  
+    you can write
+    ```python
+
+            ret  =  e1 if j1 else
+                    e2 if j2 else
+                    e3 
+    ```
+    instead of
+
+    ```python
+
+            ret  =  e1 if j1 else \
+                    e2 if j2 else \
+                    e3 
+    ```
+- `lambda`  
+
+    ```python
+             .x -> x+1
+             as-with x def x+1
+             as-with x def as y def x+y
+    ```
 
 ### Add Where Syntax  
     
@@ -39,6 +68,7 @@
         - P.S for *Compile&Interpret*  
                 If your want to get a complete knowledge about how Python works, you should understand how the two C Module works firstly.
     
+
 
 ### Fix Where Syntax in Lambda Closure
 - date : 2017-07-30

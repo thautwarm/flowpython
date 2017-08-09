@@ -25,66 +25,99 @@ Grammar
 
 **with quite few new additional keywords here**
 
-* where syntax
+* **Where Syntax**
 
-.. code:: python
+    .. code:: python
 
-    (test) where:
-        statements
+        (test) where:
+            statements
         ...
+        # "test" is the top one of expressions in Python Grammar.
 
-    # "test" is the top one of expressions in Python Grammar.
+    - Take a look at here:
+        the **where** blocks would be **executed before the expression at the head**, 
+        but it should be **located at the end**.
 
-*Take a look at here*:
+    - Q :Why did I bring "where" syntax into Python?
+    - A :For **combining the expressions and statements** in Python and enhanced the readability of procedure. 
 
-the **where** blocks would be **executed before the expression at the head**, 
-but it should be **located at the end**.
+    See the following codes:
 
-- Q :Why did I bring "where" syntax into Python?
-- A :For **combining the expressions and statements** in Python and enhanced the readability of procedure. 
+    .. code:: python
 
-See the following codes:
+        # 圆柱面积 / surface area of a cylinder 
+        from math import pi
+        r = 1  # the radius
+        h = 10 # the height
 
-.. code:: python
+        S = (2*S_top + S_side) where:
+            S_top  = pi*r**2
+            S_side = C * h where:
+                C = 2*pi*r
 
-    # 圆柱面积 / surface area of a cylinder 
-    from math import pi
-    r = 1  # the radius
-    h = 10 # the height
+    And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
 
-    S = (2*S_top + S_side) where:
-        S_top  = pi*r**2
-        S_side = C * h where:
-            C = 2*pi*r
+    .. code:: python
 
-And where syntax makes it possible for **Lambda** in Python to do everything **def** can do.
-
-.. code:: python
-
-    # multi-row lambda in python
+        # multi-row lambda in python
     
-    lambda x:  someFunc(x) where:
-        def someFunc(var):
-            pass
+        lambda x:  someFunc(x) where:
+            def someFunc(var):
+               pass
     
-
+        lambda x:  ret where:
+            def someFunc(var):
+               ...
+            ret = someFunc(x)
+    
 However, in Flowpython, there are some other way more interesting supplied to define a "lambda" than "lambda x: f(x)" :
 
-.. code:: python
+* **Lambda Syntax**
 
-    # Lambda
+    .. code:: python
 
-    lambda x,y,z : lambda a,b,c : x*a + y*b + z*c
-    # which equals to 
-    .x,y,z -> .a,b,c ->  x*a + y*b + z*c
-    # which equals to 
-    as-with x,y,z def as a,b,c def x*a + y*b + z*c
+        # Lambda
 
-    #look at this example:
+        lambda x,y,z : lambda a,b,c : x*a + y*b + z*c
+        # which equals to 
+        .x,y,z -> .a,b,c ->  x*a + y*b + z*c
+        # which equals to 
+        as-with x,y,z def as a,b,c def x*a + y*b + z*c
+
+        #look at this example:
     
-    as-with x def as y def as z def x+y+z
-    # which equals to 
-    as-with x def as-with y def as-with z def x+y+z
+        as-with x def as y def as z def x+y+z
+        # which equals to 
+        as-with x def as-with y def as-with z def x+y+z
+
+And we know that there is some powerful tool in some FP languages, like 
+
+* **Pattern matching**
+
+    .. code:: python
+
+        condic +[<] 1:
+            case a:2           => 
+                assert a == 1 and a < 2
+            +(.x->type(x))
+            case a:int =>
+                assert a == 1 and type(a) == int
+        condic 1:
+            +(.x->2*x)
+            case a:3 => 
+                assert a == 1 and a*2 == 3
+            +[is not]
+            case a:2 =>
+                assert a == 1 and a is not 2
+            otherwise =>
+                ...
+        
+More about Pattern Matching to see `TestFile <https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py>`_
+And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
+
+
+            
+        
 
 
 
@@ -100,22 +133,7 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
     **with-in-with-def** => **with-in-with-break**
 
 - date: 2017-07-29
-    * **test if else test**
-        * make a change to support like
-        
-        .. code:: python
-
-            ret  =  e1 if j1 else
-                    e2 if j2 else
-                    e3 
-    
-        instead of
-
-        .. code:: python
-
-            ret  =  e1 if j1 else \
-                    e2 if j2 else \
-                    e3 
+    * fix **test if else test**
 
     * **where** syntax 
         * **with-in-with-def** => **where - syntax**
@@ -123,30 +141,8 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
     * **lambda**
         * add two new methods to define "lambda".
 
-        .. code:: python
-
-             .x -> x+1
-             as-with x def x+1
-             as-with x def as y def x+y
-
 - date: 2017-08-06
     * **switch-case-otherwise**
-
-    .. code:: python
-        
-        x = (1,2,3)
-
-        switch x:
-            case (1) :
-                ...
-                assert(False)
-            case (1,2):
-                ...
-                assert(False)
-            otherwise:
-                ...
-                assert(x == (1,2,3))
-
 - date: 2017-08-07
     * **fix-keyword**
     * **switch-case-otherwise -> condic-case-otherwise**
