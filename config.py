@@ -121,6 +121,8 @@ if __name__ == '__main__':
         for file in files:
             print('testing on {}'.format(file))
             os.system("./python {}".format(file))
+    elif main_arg == 'run':
+        os.system(f"{pythonDistPath}/python")
     else:
         print(BaseException("main argument cannot be identified."))
         pass

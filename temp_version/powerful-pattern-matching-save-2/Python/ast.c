@@ -3702,10 +3702,9 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     stmt_ty do_assign, do_try, do_if, do_except;
     asdl_seq* try_body, *try_handler, *try_handler_content,  *where_suite;
     expr_ty tmp_var, if_test_res, do_if_exp, test_call;
-    identifier tmp_name;
+    PyObject *tmp_name;
     
     expr_ty _py_true  ;
-
     _py_true  = NameConstant(Py_True, LINENO(n), n->n_col_offset, c->c_arena);
     expr_ty _py_false ;
     _py_false = NameConstant(Py_False, LINENO(n), n->n_col_offset, c->c_arena);
@@ -3715,51 +3714,29 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     asdl_seq_SET(to_match_seq, 0, to_match);
     do_assign = Assign(to_match_seq, target, LINENO(n), n->n_col_offset, c->c_arena);
     
+    tmp_name = new_identifier("__pm__", c);
+    if (!tmp_name)
+        return NULL;
+    tmp_var = Name(tmp_name, Store, LINENO(n), n->n_col_offset, c->c_arena);
 
-    // case test
-    // node* tmp_node;
-    // tmp_node = PyNode_New(NAME);
-    // tmp_node->n_str = "__patm__";
-    // tmp_name = new_identifier("__PM__", c);
-    // if (!tmp_name)
-    //     return NULL;
-    // tmp_var = Name(tmp_name, Load, LINENO(n), n->n_col_offset, c->c_arena); 
-    // tmp_var_seq = _Py_asdl_seq_new(1, c->c_arena);
-    // asdl_seq_SET(tmp_var_seq, 0, tmp_var);
+    tmp_var_seq = _Py_asdl_seq_new(1, c->c_arena);
+    asdl_seq_SET(tmp_var_seq, 0, tmp_var);
 
     
 
+
     
-    //============
-    // do_if = Assign(tmp_var_seq, _py_true, LINENO(n), n->n_col_offset, c->c_arena);
+    //===========
 
-    try_body = _Py_asdl_seq_new(1, c->c_arena);
-    asdl_seq_SET(try_body, 0, do_assign);
-
-    do_except = Assign(to_match_seq, _py_true,LINENO(n), n->n_col_offset, c->c_arena);
+    // do_except / try_handler
+    do_except = Assign(tmp_var_seq, _py_false, LINENO(n), n->n_col_offset, c->c_arena);
     try_handler_content = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(try_handler_content, 0, do_except);
     try_handler = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(try_handler, 0, ExceptHandler(NULL, NULL, try_handler_content, LINENO(n),
                              n->n_col_offset, c->c_arena));
-    
 
-
-    
-    // asdl_seq_SET(try_handler, 0, do_assign);
-    
-    //===========
-
-    // do_except
-
-    // do_except  = Assign(tmp_var_seq, _py_false, LINENO(n), n->n_col_offset, c->c_arena);
-    // try_handler_content = _Py_asdl_seq_new(1, c->c_arena);
-    // asdl_seq_SET(try_handler_content, 0, do_except);
-    // try_handler = _Py_asdl_seq_new(1, c->c_arena);
-    // asdl_seq_SET(try_handler, 0, ExceptHandler(NULL, NULL, try_handler_content, LINENO(n),
-    //                          n->n_col_offset, c->c_arena)) ;
-
-    // // do_if
+    // do_if
     // if (to_match_augs == NULL){
     //     do_if = Assign(tmp_var_seq, _py_true, LINENO(n), n->n_col_offset, c->c_arena);
     // }
@@ -3781,21 +3758,18 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     //     do_if_exp = IfExp(if_test_res, _py_true, _py_false, LINENO(n), n->n_col_offset, c->c_arena);
     //     do_if = Assign(tmp_var_seq, do_if_exp, LINENO(n), n->n_col_offset, c->c_arena);
     // }
-    // try_body = _Py_asdl_seq_new(2, c->c_arena);
-    // asdl_seq_SET(try_body, 0, do_assign);
-    // asdl_seq_SET(try_body, 1, do_if);
+    do_if = Assign(tmp_var_seq, _py_true, LINENO(n), n->n_col_offset, c->c_arena);
+    try_body = _Py_asdl_seq_new(2, c->c_arena);
+    asdl_seq_SET(try_body, 0, do_assign);
+    asdl_seq_SET(try_body, 1, do_if);
 
     // // do_try
     do_try = Try(try_body, try_handler, NULL, NULL, LINENO(n), n->n_col_offset, c->c_arena);
     where_suite = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(where_suite, 0, do_try);
-
-    // // set context
-    // if (!set_context(c, tmp_var, Store, tmp_node ))
-    //     return NULL;
     if (!set_context(c, to_match, Store, CHILD(n, 1)))
         return NULL;
-    return Where(_py_true, where_suite, LINENO(n), n->n_col_offset, c->c_arena);
+    return Where(Name(tmp_name, Store, LINENO(n), n->n_col_offset, c->c_arena), where_suite, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
 static stmt_ty
