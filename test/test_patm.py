@@ -63,6 +63,13 @@ condic +(tomap(type)) [1,2,3]:
     otherwise =>
             assert False, "+(tomap(type)) case (*a,b):[int]*3 \n cannot match [1,2,3]!"
 
+condic +(type) [1,2,3]:
+    case (*a, b)-> a: list =>
+            print("niconico-ni!niconico-ni!niconico-ni!")
+            assert( a == [1,2] )
+    otherwise              =>
+            assert type(a) is list
+
 condic 1:
         +(.x->2*x)
         case a:3 => 

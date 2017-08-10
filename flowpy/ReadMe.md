@@ -8,6 +8,7 @@
 - [Fix-keyword-conflictions](#fix-keyword-conflictions)
 - [Powerful-pattern-matching](#powerful-pattern-matching)
 - [Arrow-Transform](#arrow-transform)
+- [Matching-Filter](#matching-filter)
 
 ----
 
@@ -274,7 +275,7 @@ fix `if-expr` and add some new ways to define `lambda`.
 | python pattern matching(callable)  | +(`callable`) |          
 
 ### Arrow Transform
-- date: 2017-08-08
+- date: 2017-08-10
 - **arrow transform expression**  
     This one looks like **lambda**, and they have quite a lot of features in common.  
     Look at this example:  
@@ -298,6 +299,19 @@ fix `if-expr` and add some new ways to define `lambda`.
     ```
     To conclude, `lambda` is the `lazy` form of `arrow transform`.  
     The grammar identity `.` means **Take It As Lazy**
+
+### Matching Filter
+- date: 2017-08-10
+    ```C
+        condic[] [1,2,3]:
+            +(type)
+            case (*a,b) -> a:list => 
+                print("just match 'a' with 'list' ")
+            
+            otherwise           =>
+                print("emmmmmm,,")
+
+    ```
 
 
 

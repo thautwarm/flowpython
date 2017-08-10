@@ -111,6 +111,15 @@ And we know that there are some powerful tools in some FP languages, like
             otherwise  =>
                 ...
         
+        # new syntax: matching filter
+        condic[] [1,2,3] :
+            +(type) 
+            case (*a,b)->a:list =>
+                assert type(a) == list
+            otherwise           =>
+                assert False,"emmmm"
+
+        
 More about Pattern Matching to see `TestFile <https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py>`_
 And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
 
@@ -162,6 +171,8 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 - date: 2017-08-10
     * **add-arrow-transform(strict form of lambda)**
     * See `Arrow Transform <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#arrow-transform>`_
+    * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#matching-filter>`_
+
 
 HowToGetFlowPy
 --------------

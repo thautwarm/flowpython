@@ -3732,6 +3732,17 @@ ast_for_if_stmt(struct compiling *c, const node *n)
 static expr_ty 
 try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty to_match, expr_ty to_match_augs, expr_ty func, cmpop_ty _op)
 {
+    const node *comp_node;
+    if (NCH(CHILD(n, 1)) == 3){
+        comp_node = CHILD(CHILD(n, 1), 2);
+        to_match = ast_for_expr(c, CHILD(CHILD(n, 1), 0));
+        if (!to_match)
+            return NULL;
+    }
+    else{
+        comp_node = CHILD(n, 1);
+    }
+
     asdl_seq  *to_match_seq, *tmp_var_seq;
     stmt_ty do_assign, do_try, do_if, do_except;
     asdl_seq* try_body, *try_handler, *try_handler_content,  *where_suite;
@@ -3764,7 +3775,9 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     do_if = Assign(tmp_var_seq, _py_true, LINENO(n), n->n_col_offset, c->c_arena);
     }    
     else{
-        to_match_to_load = ast_for_expr(c, CHILD(n, 1));
+        to_match_to_load = ast_for_expr(c, comp_node);
+        if (!to_match_to_load)
+            return NULL;
 
         asdl_int_seq *ops ;
         ops = _Py_asdl_int_seq_new(1, c->c_arena);
