@@ -2564,6 +2564,33 @@ ast_for_starred(struct compiling *c, const node *n)
     return Starred(tmp, Load, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
+static expr_ty
+ast_for_transform(struct compiling *c, const node *n){
+    expr_ty master, arrow_to, tmp_var;
+    asdl_seq  *where_handler, *tmp_var_seq;
+
+    master = ast_for_expr(c, CHILD(n, 0));
+    if (!master)
+        return NULL;
+
+    PyObject *tmp_name;
+    tmp_name = new_identifier("_", c);
+    if (!tmp_name)
+        return NULL;
+
+    tmp_var = Name(tmp_name, Store, LINENO(n), n->n_col_offset, c->c_arena);
+    tmp_var_seq = _Py_asdl_seq_new(1, c->c_arena);
+    asdl_seq_SET(tmp_var_seq, 0, tmp_var);
+    
+    where_handler = _Py_asdl_seq_new(1, c->c_arena);
+    asdl_seq_SET(where_handler, 0, Assign(tmp_var_seq, master, LINENO(n), n->n_col_offset, c->c_arena));
+
+    arrow_to = ast_for_expr(c, CHILD(n, 2));
+    
+    return Where(arrow_to, where_handler, LINENO(n), n->n_col_offset, c->c_arena);
+}
+
+
 
 /* Do not name a variable 'expr'!  Will cause a compile error.
 */
@@ -2600,8 +2627,15 @@ ast_for_expr(struct compiling *c, const node *n)
             if (TYPE(CHILD(n, 0)) == lambdef ||
                 TYPE(CHILD(n, 0)) == lambdef_nocond)
                 return ast_for_lambdef(c, CHILD(n, 0));
-            else if (NCH(n) > 1)
-                return ast_for_ifexpr(c, n);
+            else 
+                switch(NCH(n)){
+                    case 3:
+                        return ast_for_transform(c, n);
+                    case 1:
+                        break;
+                    default:
+                        return ast_for_ifexpr(c, n); 
+                }
             /* Fallthrough */
         case or_test:
         case and_test:
@@ -3696,13 +3730,25 @@ ast_for_if_stmt(struct compiling *c, const node *n)
 
 
 static expr_ty 
-try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expt_ty to_match, expr_ty to_match_augs, expr_ty func)
+try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty to_match, expr_ty to_match_augs, expr_ty func, cmpop_ty _op)
 {
-    asdl_seq* target_seq, *to_match_seq, *tmp_var_seq;
+    const node *comp_node;
+    if (NCH(CHILD(n, 1)) == 3){
+        comp_node = CHILD(CHILD(n, 1), 2);
+        to_match = ast_for_expr(c, CHILD(CHILD(n, 1), 0));
+        if (!to_match)
+            return NULL;
+    }
+    else{
+        comp_node = CHILD(n, 1);
+    }
+
+    asdl_seq  *to_match_seq, *tmp_var_seq;
     stmt_ty do_assign, do_try, do_if, do_except;
-    asdl_seq* try_body, *try_handler, *where_suite;
-    expr_ty tmp_var, if_test_res, do_if_exp, test_call;
-    identifier tmp_name;
+    asdl_seq* try_body, *try_handler, *try_handler_content,  *where_suite;
+    expr_ty tmp_var, if_test_res, do_if_exp, test_call, to_match_to_load;
+
+    PyObject *tmp_name;
     
     expr_ty _py_true  ;
     _py_true  = NameConstant(Py_True, LINENO(n), n->n_col_offset, c->c_arena);
@@ -3710,60 +3756,73 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expt_ty
     _py_false = NameConstant(Py_False, LINENO(n), n->n_col_offset, c->c_arena);
 
     //do assign
+    if (!set_context(c, to_match, Store, CHILD(n, 1)))
+        return NULL;
     to_match_seq = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(to_match_seq, 0, to_match);
     do_assign = Assign(to_match_seq, target, LINENO(n), n->n_col_offset, c->c_arena);
     
-    // case test
-    
-    
-    tmp_name = new_identifier("__pm__", c);
+    tmp_name = new_identifier("_", c);
     if (!tmp_name)
         return NULL;
-    tmp_var = Name(tmp_name, Load, LINENO(n), n->n_col_offset, c->c_arena); 
+    tmp_var = Name(tmp_name, Store, LINENO(n), n->n_col_offset, c->c_arena);
+
     tmp_var_seq = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(tmp_var_seq, 0, tmp_var);
-    
-    // do_except
-    do_except  = Assign(tmp_var_seq, _py_false, LINENO(n), n->n_col_offset, c->c_arena);
-    try_handler = _Py_asdl_seq_new(1, c->c_arena);
-    asdl_seq_SET(try_handler, 0, do_except);
 
-
-    // do_if
+    // do try | do if
     if (to_match_augs == NULL){
-        do_if = Assign(tmp_var_seq, _py_true, LINENO(n), n->n_col_offset, c->c_arena);
-    }
+    do_if = Assign(tmp_var_seq, _py_true, LINENO(n), n->n_col_offset, c->c_arena);
+    }    
     else{
-        cmpop_ty _op;
-        _op = Eq;
+        to_match_to_load = ast_for_expr(c, comp_node);
+        if (!to_match_to_load)
+            return NULL;
+
         asdl_int_seq *ops ;
-        ops = _Py_asdl_seq_new(1, c->c_arena);
+        ops = _Py_asdl_int_seq_new(1, c->c_arena);
         asdl_seq_SET(ops, 0, _op);
 
         asdl_seq *to_match_augs_seq;
         to_match_augs_seq = _Py_asdl_seq_new(1, c->c_arena);
         asdl_seq_SET(to_match_augs_seq, 0, to_match_augs);
+        
         if (func != NULL){
+            to_match_seq = _Py_asdl_seq_new(1, c->c_arena);
+            if (!set_context(c, to_match_to_load, Load, CHILD(n, 1)))
+                return NULL;
+            asdl_seq_SET(to_match_seq, 0, to_match_to_load);
+            
             test_call  = Call(func, to_match_seq, NULL, LINENO(n), n->n_col_offset, c->c_arena);
             if_test_res = Compare(test_call , ops, to_match_augs_seq, LINENO(n), n->n_col_offset, c->c_arena);
         }
         else{
-            if_test_res = Compare(to_match, ops, to_match_augs_seq, LINENO(n), n->n_col_offset, c->c_arena);
+            if_test_res = Compare(to_match_to_load, ops, to_match_augs_seq, LINENO(n), n->n_col_offset, c->c_arena);
         }
         do_if_exp = IfExp(if_test_res, _py_true, _py_false, LINENO(n), n->n_col_offset, c->c_arena);
         do_if = Assign(tmp_var_seq, do_if_exp, LINENO(n), n->n_col_offset, c->c_arena);
-    }
+    }        
+
     try_body = _Py_asdl_seq_new(2, c->c_arena);
     asdl_seq_SET(try_body, 0, do_assign);
     asdl_seq_SET(try_body, 1, do_if);
 
-    // do_try
+
+    //do except
+    do_except = Assign(tmp_var_seq, _py_false ,LINENO(n), n->n_col_offset, c->c_arena);
+    try_handler_content = _Py_asdl_seq_new(1, c->c_arena);
+    asdl_seq_SET(try_handler_content, 0, do_except);
+
+    try_handler = _Py_asdl_seq_new(1, c->c_arena);
+    asdl_seq_SET(try_handler, 0, ExceptHandler(NULL, NULL, try_handler_content, LINENO(n),
+                             n->n_col_offset, c->c_arena));
+    
+
     do_try = Try(try_body, try_handler, NULL, NULL, LINENO(n), n->n_col_offset, c->c_arena);
     where_suite = _Py_asdl_seq_new(1, c->c_arena);
     asdl_seq_SET(where_suite, 0, do_try);
-
-    return Where(tmp_var, where_suite, LINENO(n), n->n_col_offset, c->c_arena);
+    
+    return Where( Name(tmp_name, Load, LINENO(n), n->n_col_offset, c->c_arena)  , where_suite, LINENO(n), n->n_col_offset, c->c_arena);
 }
 
 static stmt_ty
@@ -3775,7 +3834,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
     if (!target)
         return NULL;
     
-    int i, has_otherwise, case_end;
+    int i, idx_of_case_head,  has_otherwise, case_end;
 
     const node *branch;
     node *tmp;
@@ -3790,7 +3849,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
     expr_ty callfunc;
     expr_ty callfunc_for_each;
 
-    expr_ty aug_expr;
+    expr_ty aug_expr = NULL;
 
     asdl_int_seq *ops;
     expr_ty _cmp;
@@ -3809,7 +3868,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         case_end = case_end - 1;
         has_otherwise = 0;
     }
-    
+
     // check switch head.
     branch = CHILD(n, 0);
     if (NCH(branch) == 1){
@@ -3822,27 +3881,46 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         s = STR(CHILD(branch, 0));
         switch (s[0]){
             case '[':{
-                if (TYPE(CHILD(branch, 1)) == test){
-                    case_type = DUAL_MODE;
-                    callfunc  = ast_for_expr(c, CHILD(branch, 1)); 
-                    _op = Eq;
-                }
-                else{
-                    case_type = COMP_MODE;
+                case_type = COMP_MODE;
+                if (TYPE(CHILD(branch, 1)) == comp_op)
                     _op = ast_for_comp_op(c, CHILD(branch, 1));
-                    callfunc  = NULL; 
-                }
+                else
+                    _op = Eq;
+                callfunc  = NULL;
                 break;
             }
             case '(':{
                 case_type = UNARY_MODE;
-                callfunc  = ast_for_expr(c, CHILD(branch, 1)); 
-                break;
+                goto for_expr;
             }
-            case '<':{
+            case '{':{
+                case_type = DUAL_MODE;
+                goto for_expr;
+            }
+            case '+':{
                 case_type = PM_MODE;
+                if (TYPE(CHILD(branch, 2)) == test){
+                    callfunc = ast_for_expr(c, CHILD(branch, 2));
+                    _op = Eq;
+                }
+                else if (TYPE(CHILD(branch, 2)) == comp_op){
+                    _op = ast_for_comp_op(c, CHILD(branch, 2));
+                    callfunc = NULL;
+                }
+                else{
+                    _op = Eq;
+                    callfunc = NULL;
+                }
                 break;
             }
+            case 'c':
+                for_expr:
+                if (TYPE(CHILD(branch, 1)) == test)
+                    callfunc = ast_for_expr(c, CHILD(branch, 1));
+                else
+                    callfunc = NULL;
+                _op = Eq;
+                break;
         }
     }
     if (has_otherwise){
@@ -3855,7 +3933,7 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         }
         if (strcmp(STR(tmp), "otherwise")){
             PyErr_Format(PyExc_SystemError,
-                                "Keyword Error in Flowpy Gammar: '%s' should be 'otherwise' !!", STR(tmp));
+                                "Syntax Error in Flowpy Gammar: '%s' should be 'otherwise' !!", STR(tmp));
             return NULL;
         }
         otherwise_body = ast_for_suite(c, CHILD(branch, 3));
@@ -3870,13 +3948,16 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
             (STR(CHILD(branch, 2))[0] == ':' && NCH(branch) != 7)
             ){
             PyErr_Format(PyExc_SystemError,
-                                "Require an expression to test in Flowpy Gammar: 'case expr => ...' not 'case => ...'  !!");
+                                "Syntax Error in Flowpy Gammar: Require an expression to test, use 'case expr => ...' instead of 'case => ...'  !!");
             return NULL;
         }
         if (NCH(branch) == 7){
             aug_expr = ast_for_expr(c, CHILD(branch, 3));
             if (!aug_expr)
                 return NULL;
+        }
+        else{
+            aug_expr = NULL;
         }
         _cmp = ast_for_expr(c, CHILD(branch, 1));
         if (!_cmp)
@@ -3890,48 +3971,58 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
            //check the syntax
            if (strcmp(STR(CHILD(tmp, 0)), "case")){
                 PyErr_Format(PyExc_SystemError,
-                                    "Keyword Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
+                                    "Syntax Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
                 return NULL;
             }
         }
         else{
             //check the syntax
-            if (strcmp(STR(CHILD(tmp, 1)), "case")){
+            if (strcmp(STR(CHILD(tmp, NCH(tmp)-1)), "case")){
                 PyErr_Format(PyExc_SystemError,
-                                    "Keyword Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
+                                    "Syntax Error in Flowpy Gammar: '%s' should be 'case' !!", STR(CHILD(branch, 0)) );
                 return NULL;
             }
             tmp = CHILD(tmp, 0);
-            
-            if ( NCH(tmp) == 3){
-                if (TYPE(CHILD(tmp,  1)) == test ){
-                    callfunc_for_each = ast_for_expr(c, CHILD(tmp, 1));
-                }
-                else{
-                    if (STR(CHILD(tmp,0)))
-                    _op_for_each   =    ast_for_comp_op(c, CHILD(tmp, 1));
-                }
-            }
-            else{
-                // <>case ... => | []case ...=> | () case ... => 
-                callfunc_for_each = callfunc;
-                _op_for_each = _op;
-            }
-
+            idx_of_case_head = 2;
             s = STR(CHILD(tmp, 0));
+            switch (NCH(tmp)){
+                case 3:{
+                    if ( s[0] == '+' )
+                        goto for_patm_length3;  // for case  "+()"/"+[]"
+                    idx_of_case_head -= 1;
+                }
+                case 4:{ // case "+(test)"/ "+[comp_op]"
+                    if (TYPE(CHILD(tmp,  idx_of_case_head)) == test ){
+                        callfunc_for_each = ast_for_expr(c, CHILD(tmp, idx_of_case_head));
+                        _op_for_each = Eq;
+                    }
+                    else{
+                        _op_for_each   =    ast_for_comp_op(c, CHILD(tmp, idx_of_case_head));
+                        callfunc_for_each = NULL;
+                    }
+                    break;
+                }
+                default: // <>case ... => | []case ...=> | () case ... => 
+                    for_patm_length3:
+                    callfunc_for_each = callfunc;
+                    _op_for_each = _op;
+                    break;
+            }
+            
             switch (s[0]){
                 case '[':{
-                    if (TYPE(CHILD(tmp, 1)) == test)
-                        case_type_for_each = DUAL_MODE; 
-                    else
-                        case_type_for_each = COMP_MODE;
+                    case_type_for_each = COMP_MODE;
                     break;
                 }
                 case '(':{
                     case_type_for_each = UNARY_MODE;
                     break;
                 }
-                case '<':{
+                case '{':{
+                    case_type_for_each = DUAL_MODE;
+                    break;
+                }
+                case '+':{
                     case_type_for_each = PM_MODE;
                     break;
                 }
@@ -3941,7 +4032,9 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
         switch( case_type_for_each )
         {
             case PM_MODE:{
-                judge = try_pattern_matching(c, branch, target, _cmp, aug_expr, callfunc_for_each);
+                judge = try_pattern_matching(c, branch, target, _cmp, aug_expr, callfunc_for_each, _op_for_each);
+                if (!judge)
+                    return NULL;
                 break;
             }
             case COMP_MODE:{
@@ -3966,6 +4059,11 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
                 target_seq = _Py_asdl_seq_new(1, c->c_arena);
                 asdl_seq_SET(target_seq, 0, target);
 
+                if (!callfunc_for_each){
+                    PyErr_Format(PyExc_SystemError,
+                            "ValueError in Flowpy Gammar: Require an callable object !!");
+                    return NULL;
+                }
                 aug_expr = Call(callfunc_for_each, target_seq, NULL, LINENO(branch),
                                 branch->n_col_offset, c->c_arena);
                 judge = Compare(aug_expr, ops, cmps, LINENO(branch),
@@ -3973,14 +4071,14 @@ ast_for_switch_stmt(struct compiling *c, const node *n)
                 break;
             }
             case DUAL_MODE:{
-                ops = _Py_asdl_int_seq_new(1, c->c_arena);
-                _op_for_each = Eq;
-                asdl_seq_SET(ops, 0, _op_for_each);
-
                 target_seq = _Py_asdl_seq_new(2, c->c_arena);
                 asdl_seq_SET(target_seq, 0, target);
                 asdl_seq_SET(target_seq, 1, _cmp);
-
+                if (!callfunc_for_each){
+                    PyErr_Format(PyExc_SystemError,
+                            "ValueError in Flowpy Gammar: Require an callable object !!");
+                    return NULL;
+                }
                 judge = Call(callfunc_for_each, target_seq, NULL, LINENO(branch),
                                 branch->n_col_offset, c->c_arena);
                 break;
