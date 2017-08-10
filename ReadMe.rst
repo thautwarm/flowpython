@@ -114,7 +114,18 @@ And we know that there are some powerful tools in some FP languages, like
 More about Pattern Matching to see `TestFile <https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py>`_
 And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
 
+Another useful tool in Flowpython is **Arrow Transform**, which enhances the readability greatly and makes it possible 
+to **Avoid Prolix Parentheses**.  
 
+* **Arrow Transform**
+    
+    .. code:: python
+
+        range(100) -> reduce(.x,y->x+y, _) -> print(_) where:
+            from functools import reduce
+
+        [1,2,3] -> map(.x->x+1, _) -> list(_) -> print(_)
+        
             
     
 Revision
@@ -146,7 +157,9 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 - date: 2017-08-09
     * **add-pattern-matching-syntax**
     * See `Powerful Pattern Matching <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
-
+- date: 2017-08-10
+    * **add-arrow-transform(strict form of lambda)**
+    * See `Arrow Transform <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#arrow-transform>`_
 
 HowToGetFlowPy
 --------------

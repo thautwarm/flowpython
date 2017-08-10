@@ -7,6 +7,7 @@
 - [Add-switch-syntax](#add-switch-syntax)
 - [Fix-keyword-conflictions](#fix-keyword-conflictions)
 - [Powerful-pattern-matching](#powerful-pattern-matching)
+- [Arrow-Transform](#arrow-transform)
 
 ----
 
@@ -271,6 +272,35 @@ fix `if-expr` and add some new ways to define `lambda`.
 | dual callable comparing matching   | {`callable`}  | 
 | python pattern matching(comparing) | +[`operator`] | 
 | python pattern matching(callable)  | +(`callable`) |          
+
+### Arrow Transform
+- date: 2017-08-08
+- **arrow transform expression**  
+    This one looks like **lambda**, and they have quite a lot of features in common.  
+    Look at this example:  
+    - `arrow transform`
+    ```python
+    >> 1 -> _+1
+    >> 2
+    >> x = [1,2,3]
+    >> x -> map(.x->x+1, _) ->  list(_)
+    >> [2,3,4]
+    ```
+    - `lambda`
+    ```python
+    >> .x -> x
+    >> _(1)
+    >> 1
+    >> var = [1,2,3]
+    >> .x -> map(.x->x+1, x) -> list(_)
+    >> _(var)
+    >> [2,3,4]
+    ```
+    To conclude, `lambda` is the `lazy` form of `arrow transform`.  
+    The grammar identity `.` means **Take It As Lazy**
+
+
+
 
         
     
