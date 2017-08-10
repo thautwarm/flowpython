@@ -125,7 +125,9 @@ to **Avoid Prolix Parentheses**.
             from functools import reduce
 
         [1,2,3] -> map(.x->x+1, _) -> list(_) -> print(_)
-        
+
+Read `Arrow Transform  <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#arrow-transform>`_ to get a konwledge of this grammar.
+
             
     
 Revision
