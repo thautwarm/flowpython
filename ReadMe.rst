@@ -23,6 +23,8 @@ C/C++ Compiler
 Grammar
 ------------
 
+See `Grammar <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md>`_.
+
 **with quite few new additional keywords here**
 
 * **Where Syntax**
