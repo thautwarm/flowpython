@@ -182,7 +182,7 @@ HowToGetFlowPy
     
     - I have tried with **Cygwin** but finally failed. 
 
-**For Unix User**
+**For Linux User**
 
 Firstly, you should have a C/C++ compiler like: 
     
