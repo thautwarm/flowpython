@@ -3762,7 +3762,7 @@ try_pattern_matching(struct compiling *c, const node *n, expr_ty target, expr_ty
     asdl_seq_SET(to_match_seq, 0, to_match);
     do_assign = Assign(to_match_seq, target, LINENO(n), n->n_col_offset, c->c_arena);
     
-    tmp_name = new_identifier("_", c);
+    tmp_name = new_identifier("__", c);
     if (!tmp_name)
         return NULL;
     tmp_var = Name(tmp_name, Store, LINENO(n), n->n_col_offset, c->c_arena);

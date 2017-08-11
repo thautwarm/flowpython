@@ -23,8 +23,6 @@ C/C++ Compiler
 Grammar
 ------------
 
-See `Grammar <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md>`_.
-
 **with quite few new additional keywords here**
 
 * **Where Syntax**
@@ -123,7 +121,7 @@ And we know that there are some powerful tools in some FP languages, like
 
         
 More about Pattern Matching to see `TestFile <https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py>`_
-And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
+And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#powerful-pattern-matching>`_
 
 Another useful tool in Flowpython is **Arrow Transform**, which enhances the readability greatly and makes it possible 
 to **Avoid Prolix Parentheses**.  
@@ -137,14 +135,14 @@ to **Avoid Prolix Parentheses**.
 
         [1,2,3] -> map(.x->x+1, _) -> list(_) -> print(_)
 
-Read `Arrow Transform  <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#arrow-transform>`_ to get a konwledge of this grammar.
+Read `Arrow Transform  <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#arrow-transform>`_ to get a konwledge of this grammar.
 
             
     
 Revision
 ------------
 
-More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md>`_  here.
+More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md>`_  here.
 
 - date: 2017-07-28
     * **where**  syntax 
@@ -165,15 +163,15 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 - date: 2017-08-07
     * **fix-keyword**
     * **switch-case-otherwise -> condic-case-otherwise**
-    * See `fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#fix-keyword-conflictions>`_
+    * See `fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#fix-keyword-conflictions>`_
 
 - date: 2017-08-09
     * **add-pattern-matching-syntax**
-    * See `Powerful Pattern Matching <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#powerful-pattern-matching>`_
+    * See `Powerful Pattern Matching <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#powerful-pattern-matching>`_
 - date: 2017-08-10
     * **add-arrow-transform(strict form of lambda)**
-    * See `Arrow Transform <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#arrow-transform>`_
-    * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/flowpy/ReadMe.md#matching-filter>`_
+    * See `Arrow Transform <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#arrow-transform>`_
+    * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#matching-filter>`_
 
 
 HowToGetFlowPy
