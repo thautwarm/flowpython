@@ -144,8 +144,8 @@ fix `if-expr` and add some new ways to define `lambda`.
         # no confliction
         
         where = 1
-        a = ret where:
-            ret = where
+        where += where where:
+            where += where
         
         case = 1
         otherwise = 2
