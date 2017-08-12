@@ -1,6 +1,7 @@
 import sys, os, platform, subprocess
 import flowpython
-setup = setupfile.setup
+from .setupfile import setup 
+
 getargs = .argv -> dict(tuples) where:
 		tuples = [] 
 		def gen(key):
@@ -25,10 +26,10 @@ if __name__ == '__main__':
 	__Platform__  =  platform.platform().lower()
 
 	if 'h' in dict_args:
-		print("install : python -m flowpy -m install [-p PATH] \nunisntall : python -m flowpy -m uninstall [-p PATH]")
+		print("enable : python -m flowpy -m enable [-p PATH] \disable : python -m flowpy -m disable [-p PATH]")
 		print("PATH : path of python intepreter.")
 	else:
-		assert 'm' in dict_args, "mode not selected: use command ' -m [install|uninstall] ' "
+		assert 'm' in dict_args, "mode not selected: use command ' -m [enable|disable] ' "
 		condic +[==] (dict_args["m"], Arch, __Platform__):
 			case (mode, arch, platf) -> ('windows' in platf or 'linux' in platf) : True =>
 				platf = 'windows' if 'windows' in platf else 'linux'

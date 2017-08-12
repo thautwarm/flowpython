@@ -3,7 +3,7 @@ import io
 with io.open('./flowpython/ReadMe.rst', encoding='utf-8') as f:
     readme = f.read()
 import os
-
+cat = os.path.join
 setup(
     name = 'flowpython',
     version = '0.1',
@@ -19,3 +19,4 @@ setup(
     platforms  = ['windows','linux'],
     classifiers=['Programming Language :: Python :: 3.6','Programming Language :: Python :: Implementation :: CPython']
 )
+cat(os.environ["HOME"], '.flowpy') -> os.remove(_) if os.path.exists(_) else None
