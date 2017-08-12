@@ -4,7 +4,7 @@
 
 ```	
 	# install
-	python setup.py install
+	python setup.pyc install
 	python -m flowpython -m enable
 	# uninstall
 	python -m flowpython -m disable
