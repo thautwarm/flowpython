@@ -3,12 +3,19 @@
 - Just for Windows 32bit/64bit and Linux 64bit for CPython 3.6.2.
 - Will support CPython 3.5.2 and CPython 3.7 sooner.
 
+
+- use `setup.py`
 ```	
 	# install
-	python setup.pyc install
+	python setup.py install
 	python -m flowpython -m enable
 	# uninstall
 	python -m flowpython -m disable
+```
+
+- use `pip`
+```
+	pip install flowpython -i <mirror-url>
 ```
 
 
