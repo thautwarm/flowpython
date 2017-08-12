@@ -14,7 +14,7 @@
 	pip install flowpython -i <mirror-url>
 ```
 
-- enable/disable Flowpython Grammar
+- enable/disable Flowpython grammar
 ```
 	python -m flowpython -m enable/disable
 ```
