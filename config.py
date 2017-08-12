@@ -9,7 +9,7 @@ import time
 # =====================
 # user configure files
 pythonDistPath = './PythonDist'
-flowpyDistPath = './flowpy'  
+flowpyDistPath = './flowpython'  
 tempfilesPath  = './temp_version/{}'
 # ======================
 
