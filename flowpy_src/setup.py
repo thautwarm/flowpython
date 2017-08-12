@@ -8,7 +8,7 @@ setup(
     name = 'flowpython',
     version = '0.1',
     keywords='gramamr, ast, readability',
-    description = "Grammar extensions for Python",
+    description = "Additional Grammar Compatible to CPython",
     long_description=readme,
     license = 'MIT License',
     url = 'https://github.com/thautwarm/flowpython',
