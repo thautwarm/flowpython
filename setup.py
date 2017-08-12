@@ -6,7 +6,7 @@ import os
 cat = os.path.join
 setup(
     name = 'flowpython',
-    version = '0.1',
+    version = '0.1.1',
     keywords='gramamr, ast, readability',
     description = "Additional Grammar Compatible to CPython",
     long_description=readme,
@@ -19,4 +19,7 @@ setup(
     platforms  = ['windows','linux'],
     classifiers=['Programming Language :: Python :: 3.6','Programming Language :: Python :: Implementation :: CPython']
 )
-cat(os.environ["HOME"], '.flowpy') -> os.remove(_) if os.path.exists(_) else None
+try:
+	os.remove(cat(os.environ["HOME"], '.flowpy'))
+except FileNotFoundError as e:
+	pass
