@@ -1,3 +1,4 @@
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/thautwarm/flowpython/blob/master/LICENSE)
 # Install & Uninstall
 
 - Just for Windows 32bit/64bit and Linux 64bit for CPython 3.6.2.
