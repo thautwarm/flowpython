@@ -6,17 +6,19 @@
 
 - use `setup.py`
 ```	
-	# install
 	python setup.py install
-	python -m flowpython -m enable
-	# uninstall
-	python -m flowpython -m disable
 ```
 
 - use `pip`
 ```
 	pip install flowpython -i <mirror-url>
 ```
+
+- enable/disable Flowpython Grammar
+```
+	python -m flowpython -m enable/disable
+```
+
 
 
 # **Flowpython Porject**
