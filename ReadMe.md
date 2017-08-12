@@ -1,3 +1,16 @@
+# Install & Uninstall
+
+- Just for Windows 32bit/64bit and Linux 64bit.
+
+```	
+	# install
+	python setup.py install
+	python -m flowpython -m install
+	# uninstall
+	python -m flowpython -m uninstall
+```
+
+
 # **Flowpython Porject**
 
 See [Flowpython project](/flowpy/ReadMe.rst) here. 
