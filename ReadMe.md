@@ -1,6 +1,7 @@
 # Install & Uninstall
 
-- Just for Windows 32bit/64bit and Linux 64bit.
+- Just for Windows 32bit/64bit and Linux 64bit for CPython 3.6.2.
+- Will support CPython 3.5.2 and CPython 3.7 sooner.
 
 ```	
 	# install
@@ -13,7 +14,7 @@
 
 # **Flowpython Porject**
 
-See [Flowpython project](/flowpy/ReadMe.rst) here. 
+See [Flowpython project](/flowpython/ReadMe.rst) here. 
 
 # **History**
 
@@ -78,7 +79,7 @@ fix `if-expr` and add some new ways to define `lambda`.
              
     - **AST**:
         - change Python/ast.c
-            found the function `ast_for_stmt`, `ast_for_expr_stmt`,`ast_for_flow_stmt`,`ast_for_assert_stmt`, change it as what I did in **flowpy/Python/ast.c**. It tells the Python compiler how to get the data structure from the parsed codes.
+            found the function `ast_for_stmt`, `ast_for_expr_stmt`,`ast_for_flow_stmt`,`ast_for_assert_stmt`, change it as what I did in **flowpython/Python/ast.c**. It tells the Python compiler how to get the data structure from the parsed codes.
     - **Compile&Interpret**
         - change Python/compile.c  
                 This part is kind of complicated to bring out, and I think that you'd better use *version controler* to detect out what's the differences between Flowpython and CPython 3.6.2.
