@@ -11,8 +11,8 @@ class linux:
 		}
 
 import os,json
-from . import __file__ as rootpath
-from .flowpy_switcher.utils import makedir_from, moveto, bin_copyto
+from flowpython import __file__ as rootpath
+from .utils import makedir_from, moveto, bin_copyto
 user_path = os.environ['HOME']
 cat = os.path.join
 def setup(path, arch, platform):
