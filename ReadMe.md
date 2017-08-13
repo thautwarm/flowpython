@@ -356,10 +356,10 @@ from flowpython.fp.strict import flatten as strict_flatten, fastmap as strict_fa
 from flowpython.fp.norecursion.lazy import norec_flatten
 
 # fastmap( use generator instead of map in original Python )
-fastmap(.x->x+1, [1,2,3]) -> list(_)
+fastmap([1,2,3], .x -> x+1) -> list(_)
 # -> [2,3,4]
 
-strict_flat_map(.x->x+1, [1,2,3]) # -> [2,3,4] 
+strict_flat_map([1,2,3], .x->x+1) # -> [2,3,4] 
 
 # flatten
 flatten([1,2,[3,4],[[5],[6]]]) -> list(_)
