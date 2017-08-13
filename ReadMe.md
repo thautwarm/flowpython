@@ -309,7 +309,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     This one looks like **lambda**, and they have quite a lot of features in common.  
     Look at this example:  
     - `arrow transform`
-    ```python
+    ```C
     >> 1 -> _+1
     >> 2
     >> x = [1,2,3]
@@ -343,7 +343,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     ```
 
 ### FP Module
-- date: 2017-08-08
+- date: 2017-08-13
 - library: fp.py
 
 To support some basic operations in Functional Programming, here are methods implemented in `flowpython.fp`.
