@@ -348,7 +348,7 @@ fix `if-expr` and add some new ways to define `lambda`.
 
 To support some basic operations in Functional Programming, here are methods implemented in `flowpython.fp`.
 
-```python
+```C
 from flowpython.fp import compose, andThen, foldr, foldl, flat_map, flatten
 
 from flowpython.fp.strict import flatten as strict_flatten, fastmap as strict_fastmap, flat_map as strict_flat_map
