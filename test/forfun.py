@@ -19,4 +19,5 @@ permutations = .seq -> seq_seq where:
                 insertAll = . x, a -> ret where:
                     ret = [ deepcopy(x) -> _.insert(i, a) or _ for i in  (len(x) -> range(_+1))  ]
                         
-                
+            
+a = range(3) -> permutations(_)
