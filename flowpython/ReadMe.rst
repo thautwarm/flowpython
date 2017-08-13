@@ -22,7 +22,7 @@ How to Get Flowpython
 
 VERSION
 ----------
-flowpython  == 0.1.1
+flowpython  == 0.2
 
 CPython == 3.6.2
 
@@ -191,7 +191,7 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
 
 
 Compile FlowPython For Yourself
---------------
+--------------------------------------
 
 **For Windows User**
     - You'd better use Visual Studio to make the Python project, and it must be the easiest thing in the world, I think.
