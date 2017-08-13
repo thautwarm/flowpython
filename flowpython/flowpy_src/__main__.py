@@ -1,6 +1,5 @@
 import sys, os, platform, subprocess
-import flowpython
-from .setupfile import setup 
+from .flowpy_switcher.setupfile import setup 
 
 getargs = .argv -> dict(tuples) where:
 		tuples = [] 

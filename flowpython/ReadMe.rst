@@ -2,9 +2,27 @@
 Additional Grammar Compatible to CPython 
 ==========================================
 
+
+How to Get Flowpython
+-----------------------
+
+- Intsall 
+
+.. code:: shell
+    
+    pip install flowpython
+
+
+- Enable/Disable Flowpython grammar
+
+.. code:: shell
+
+    python -m flowpython -m enable/disable
+
+
 VERSION
 ----------
-flowpy  == 0.1
+flowpython  == 0.1.1
 
 CPython == 3.6.2
 
@@ -172,7 +190,7 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
     * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#matching-filter>`_
 
 
-HowToGetFlowPy
+Compile FlowPython For Yourself
 --------------
 
 **For Windows User**
