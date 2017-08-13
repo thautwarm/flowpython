@@ -6,7 +6,7 @@ import os
 cat = os.path.join
 setup(
     name = 'flowpython',
-    version = '0.1.1',
+    version = '0.2',
     keywords='gramamr, ast, readability',
     description = "Additional Grammar Compatible to CPython",
     long_description=readme,
