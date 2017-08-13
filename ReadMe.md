@@ -388,7 +388,8 @@ range(20) -> foldr(. x,y -> print(y) or x+y)(0)(_)
 flat_map([[1,2,[3,4],[5,6]],[7,8]])(.x->x+1) -> list(_)
 # -> [2,3,4,5,6,7,8,9]
 
-norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_) # object in norecursion class use no recursive methods.
+# object in norecursion class use no recursive methods.
+norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_) 
 
 
 
