@@ -350,10 +350,13 @@ To support some basic operations in Functional Programming, here are methods imp
 
 ```C
 from flowpython.fp import compose, andThen, foldr, foldl, flat_map, flatten
+from flowpython.fp import strict, norecursion
 
-from flowpython.fp.strict import flatten as strict_flatten, fastmap as strict_fastmap, flat_map as strict_flat_map
+strict_flatten = strict.flatten
+strict_fastmap = strict.fastmap 
+strict_flat_map= strict.flat_map  
+norec_flatten  =  norecursion.lazy.flatten
 
-from flowpython.fp.norecursion.lazy import norec_flatten
 
 # fastmap( use generator instead of map in original Python )
 fastmap([1,2,3], .x -> x+1) -> list(_)
