@@ -190,7 +190,7 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
     * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#matching-filter>`_
 
 - data: 2017-08-13
-    * add a module named `flowpython.fp` to give basic support to Functional Programming.
+    * add a module named **flowpython.fp** to give basic support to Functional Programming.
 
 Compile FlowPython For Yourself
 --------------------------------------
