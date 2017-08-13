@@ -37,6 +37,7 @@ See [Flowpython project](/flowpython/ReadMe.rst) here.
 - [Powerful-pattern-matching](#powerful-pattern-matching)
 - [Arrow-Transform](#arrow-transform)
 - [Matching-Filter](#matching-filter)
+- [Library fp.py](#fp-module)
 
 ----
 
@@ -341,6 +342,57 @@ fix `if-expr` and add some new ways to define `lambda`.
 
     ```
 
+### FP Module
+- date: 2017-08-08
+- library: fp.py
+
+To support some basic operations in Functional Programming, here are methods implemented in `flowpython.fp`.
+
+```python
+from flowpython.fp import compose, andThen, foldr, foldl, flat_map, flatten
+
+from flowpython.fp.strict import flatten as strict_flatten, fastmap as strict_fastmap, flat_map as strict_flat_map
+
+from flowpython.fp.norecursion.lazy import norec_flatten
+
+# fastmap( use generator instead of map in original Python )
+fastmap(.x->x+1, [1,2,3]) -> list(_)
+# -> [2,3,4]
+
+strict_flat_map(.x->x+1, [1,2,3]) # -> [2,3,4] 
+
+# flatten
+flatten([1,2,[3,4],[[5],[6]]]) -> list(_)
+# -> [1,2,3,4,5,6]
+
+# compose : Callable->Callable->Any
+f1 -> compose(_)(f2)
+
+# andThen : Callable->Callable->Any
+f1 -> andThen(_)(f2)
+
+# foreach : Callable->Callable->Any
+range(20) -> foreach(_)(print) 
+# -> 0 \n 1 \n 2 ...
+
+
+# fold : Dual Callable->(zero:Any)->Iterator->Any
+foldr # (not recommended)
+foldl # (not recommended)
+
+range(20) -> foldr(. x,y -> print(x) or x+y)(0)(_) 
+range(20) -> foldr(. x,y -> print(y) or x+y)(0)(_)
+
+# flat_map : flat_map -> Iterator -> Callable -> Iterator
+# default lazy
+flat_map([[1,2,[3,4],[5,6]],[7,8]])(.x->x+1) -> list(_)
+# -> [2,3,4,5,6,7,8,9]
+
+norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_) # object in norecursion class use no recursive methods.
+
+
+
+```
 
 
 
