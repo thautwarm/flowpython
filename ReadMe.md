@@ -398,66 +398,30 @@ norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_)
 
 ```
 
-### Multiple Matching Filters
-- date: `unfinished`
-- purpose:   
-  To deal with the cases that multiple comparing conditions following the same matching variables.
-  
-  Without multiple matching filters, we might have to write the following codes:
-  ```C
-    condic+(type) [1,2,3]:
-        case (*a, b) -> b : float => ...
-        case (*a, b) -> b : int   => ...
-        case (*a, b) -> b : str   => ...
-        case (*a, b) -> b : None.__class__ => ...
+### Branch Statements
+- date: 2017-08-15
+An easy way to define `if-elif-else` statements:
 
-  ```
-  After adding this grammar, we could do things like this:
-  ```C
-    condic+(type) [1,2,3]:
-        case (*a, b) for
-                -> b : float => ... 
-                -> b : int   => ...
-                -> b : str   => ...
-                -> b : None.__class__ =>  ...
-  ```
-  What's more:
-  ```C
-    condic+(type) [1,2,3]:
-        case (*a, b) -> b : as 
-                    float =>  ...
-                    int   =>  ...
-                    str   =>  ...
-                    None.__class__ => ...
+```python
 
-    condic+(type) [1,2,3]:
-        case (*a, b) for  
-                    -> b as    
-                        float  => ...
-                        int    => ...
-                        str    => ...
-                        None.__class__ => ...
+otherwise = True
 
-                    -> a as 
-                        list    => ...
-                        tuple   => ...
-                           
-  ```
+| x == 1           => x += 1
+| type(x) is str   => x = int(x) 
+| otherwise        =>
+        x = 2*x
+        y = 1
+def defined(key):
+    return key in globals()
 
+| 1==2 => a = False
+| 2==3 => a = False
+| True => a = True
 
-
-
+print(x)
+print(defined("y"))
         
-    
-
-
-
-
-
-
-
-
-
+```
 
 
 

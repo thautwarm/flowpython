@@ -4427,37 +4427,6 @@ ast_for_classdef(struct compiling *c, const node *n, asdl_seq *decorator_seq)
 }
 
 static stmt_ty
-ast_for_branch_stmt(struct compiling *c, const node *n)
-{
-    const node *tmp;
-    int total, i;
-    total = NCH(n)/5;
-    expr_ty target;
-    asdl_seq *body;
-    asdl_seq *orelse;
-    stmt_ty res = NULL;
-    for(i = total - 1; i >= 0 ;--i){
-        body   = ast_for_suite(c, CHILD(n, i*5+4));
-        if (!body)
-            return NULL;
-        tmp = CHILD(n, i*5+1);
-
-
-        target = ast_for_expr(c, tmp);
-        
-        if (!target)
-            return NULL;
-        if (!res)
-            res = If(target, body, NULL, LINENO(n), n->n_col_offset, c->c_arena);
-        else{
-            orelse = _Py_asdl_seq_new(1, c->c_arena);
-            asdl_seq_SET(orelse, 0, res);
-            res = If(target,body, orelse, LINENO(n), n->n_col_offset, c->c_arena);
-        }
-    }
-    return res;
-}
-static stmt_ty
 ast_for_stmt(struct compiling *c, const node *n)
 {
     if (TYPE(n) == stmt) {
@@ -4537,8 +4506,6 @@ ast_for_stmt(struct compiling *c, const node *n)
                 return ast_for_decorated(c, ch);
             case async_stmt:
                 return ast_for_async_stmt(c, ch);
-            case branch_stmt:
-                return ast_for_branch_stmt(c, ch);
             default:
                 PyErr_Format(PyExc_SystemError,
                              "unhandled small_stmt: TYPE=%d NCH=%d\n",
