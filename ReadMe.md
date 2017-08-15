@@ -38,6 +38,7 @@ See [Flowpython project](/flowpython/ReadMe.rst) here.
 - [Arrow-Transform](#arrow-transform)
 - [Matching-Filter](#matching-filter)
 - [Library fp.py](#fp-module)
+- [Branches](#branches)
 
 ----
 
@@ -398,34 +399,34 @@ norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_)
 
 ```
 
-### Branch Statements
+### Branches
 - date: 2017-08-15
 An easy way to define `if-elif-else` statements:
 
 ```python
 
-otherwise = True
-
-| x == 1           => x += 1
-| type(x) is str   => x = int(x) 
-| otherwise        =>
-        x = 2*x
-        y = 1
-def defined(key):
-    return key in globals()
-
-| 1==2 => a = False
-| 2==3 => a = False
-| True => a = True
-
-print(x)
-print(defined("y"))
-
-func = .x -> ret where:
     otherwise = True
-    | x is 0                => ret = 0.0
-    | type(x) in (str,int)  => ret = float(x)
-    | otherwise             => ret = x
+
+    | x == 1           => x += 1
+    | type(x) is str   => x = int(x) 
+    | otherwise        =>
+            x = 2*x
+            y = 1
+    def defined(key):
+        return key in globals()
+
+    | 1==2 => a = False
+    | 2==3 => a = False
+    | True => a = True
+
+    print(x)
+    print(defined("y")) 
+
+    func = .x -> ret where:
+        otherwise = True
+        | x is 0                => ret = 0.0
+        | type(x) in (str,int)  => ret = float(x)
+        | otherwise             => ret = x
         
 ```
 
