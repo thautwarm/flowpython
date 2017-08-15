@@ -420,6 +420,12 @@ def defined(key):
 
 print(x)
 print(defined("y"))
+
+func = .x -> ret where:
+    otherwise = True
+    | x is 0                => ret = 0.0
+    | type(x) in (str,int)  => ret = float(x)
+    | otherwise             => ret = x
         
 ```
 
