@@ -189,8 +189,12 @@ More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/
     * See `Arrow Transform <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#arrow-transform>`_
     * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#matching-filter>`_
 
-- data: 2017-08-13
+- date: 2017-08-13
     * add a module named **flowpython.fp** to give basic support to Functional Programming.
+
+- date: 2017-08-15
+    * add a new way to define **if-elif-else** statements.
+    * See `Branches <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#branches>`_
 
 Compile FlowPython For Yourself
 --------------------------------------
