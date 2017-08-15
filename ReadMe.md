@@ -415,10 +415,6 @@ An easy way to define `if-elif-else` statements:
     def defined(key):
         return key in globals()
 
-    | 1==2 => a = False
-    | 2==3 => a = False
-    | True => a = True
-
     print(x)
     print(defined("y")) 
 
