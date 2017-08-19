@@ -1,4 +1,5 @@
-__version__ = VERSION = "0.2"
+# -*- coding: utf-8 -*-
+__version__ = VERSION = "0.2.1.1"
 __author__  = AUTHOR  = "thautwarm"
 __lisence__ = LISENCE = "MIT"
 __doc__     = DOC     =    \

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys, os, platform, subprocess
 from .flowpy_switcher.setupfile import setup 
 
