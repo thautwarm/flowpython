@@ -400,9 +400,9 @@ norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_)
 ```
 
 ### Branches
-- date: 2017-08-15
-An easy way to define `if-elif-else` statements:
-
+- date: 2017-08-15   
+An easy way to define `if-elif-else` statements:  
+( It's not `guard` in Haskell ! )
 ```python
 
     otherwise = True
