@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class windows:
 	reps = {
 		'python3.dll',
@@ -13,7 +14,11 @@ class linux:
 import os,json
 from flowpython import __file__ as rootpath
 from .utils import makedir_from, moveto, bin_copyto
-user_path = os.environ['HOME']
+try:
+	user_path = os.environ["HOME"]
+except KeyError:
+	user_path = os.environ["HOMEPATH"]
+
 cat = os.path.join
 def setup(path, arch, platform):
 	flowpy_dir_path = cat(makedir_from(rootpath),f"{platform}-{arch}") 

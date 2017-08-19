@@ -22,7 +22,7 @@ How to Get Flowpython
 
 VERSION
 ----------
-flowpython  == 0.2
+flowpython  == 0.2.1
 
 CPython == 3.6.2
 

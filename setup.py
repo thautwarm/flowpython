@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 import io
 with io.open('./flowpython/ReadMe.rst', encoding='utf-8') as f:
@@ -6,7 +7,7 @@ import os
 cat = os.path.join
 setup(
     name = 'flowpython',
-    version = '0.2',
+    version = '0.2.1.1',
     keywords='gramamr, ast, readability',
     description = "Additional Grammar Compatible to CPython",
     long_description=readme,
@@ -21,5 +22,10 @@ setup(
 )
 try:
 	os.remove(cat(os.environ["HOME"], '.flowpy'))
-except FileNotFoundError as e:
+except KeyError:
+    try:
+        os.remove(cat(os.environ["HOMEPATH"], '.flowpy'))
+    except FileNotFoundError:
+        pass
+except FileNotFoundError:
 	pass
