@@ -1,5 +1,5 @@
 
-f = .x -> 1 where:
+f = .x -> r where:
     condic x:
         [==]
         case []             =>  r = 0
