@@ -402,12 +402,19 @@ It would be completed as sooner as possible.
     >> 1 ->> .x -> x*10 => .x-> x+1 
     >> 11
 
-    >> f1 = . seq -> map(.x->x%2, seq)
-    >> f2 = . seq -> filter(.x -> x, seq) ->> list
-    >> res = range(100) ->> f1 => f2 => groupby(.x->x)  => groupby(.x->len(x)) where:
-        from flowpython.fp import groupby
-    
-    >> res ->> groupby(.x->x) => lambda d: map(.k->(k,len(d[k])), d) ->> dict
+```
+
+```python
+
+    >> range(100)  ->> f1 \
+                    => f2 \
+                    => groupby(.x->x)  \
+                    => lambda Dict: map(.key->(key,len(Dict[key])), Dict) \
+                    => dict \
+                    => print where:
+                    from flowpython.fp import groupby
+                    f1 = . seq -> map(.x->x%2, seq)
+                    f2 = . seq -> filter(.x -> x, seq)
     >> {1:50}
 
 ```
