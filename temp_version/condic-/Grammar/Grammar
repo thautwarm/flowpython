@@ -86,7 +86,7 @@ with_item: test ['as' expr]
 except_clause: 'except' [test ['as' NAME]]
 suite: simple_stmt | NEWLINE INDENT stmt+ DEDENT
 
-test: or_test ['if' or_test 'else' [NEWLINE [INDENT]] test | '->' ( '>' pipeline_expr | test) ] | lambdef 
+test: or_test ['if' or_test 'else' [NEWLINE [INDENT]] test | '->' test] | lambdef 
 test_nocond: or_test | lambdef_nocond
 lambdef: 'lambda' [varargslist] ':' test | lambdef_head [typedargslist] 'def' test | '.' [typedargslist] '->' test
 lambdef_nocond: 'lambda' [varargslist] ':' test_nocond | lambdef_head [typedargslist] 'def' test_nocond | '.' [typedargslist] '->' test_nocond
@@ -156,6 +156,7 @@ lambdef_head: 'as' ['-' 'with']
  
 case_stmt:  case_head [test [':' test]] '=' '>' suite
 mode_stmt:  '[' [comp_op] ']' | '(' [test] ')' | '{' [test] '}' | '+'  ('[' [comp_op] ']' | '(' [test] ')')
-switch_head : ('condic' | 'condef') [mode_stmt]
+switch_head : 'condic' [mode_stmt]
 case_head : [mode_stmt [NEWLINE] ] NAME
-pipeline_expr :  test ( '=' '>' test)*
+
+

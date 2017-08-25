@@ -2592,27 +2592,6 @@ ast_for_transform(struct compiling *c, const node *n){
 
 
 
-static expr_ty
-ast_for_pipeline(struct compiling *c, const node *n){
-    expr_ty obj_called, callfunc, pipe_result;
-    asdl_seq  *arg_seqs;
-    const node* pipe_node;
-    int num, i;
-    pipe_node    = CHILD(n, 3);
-    pipe_result  = ast_for_expr(c, CHILD(n, 0));
-    num          = NCH(pipe_node);
-    for(i=0 ;i < num ; i+=3){
-        callfunc    = ast_for_expr(c, CHILD(pipe_node, i));
-        arg_seqs     = _Py_asdl_seq_new(1, c->c_arena);
-        asdl_seq_SET(arg_seqs, 0, pipe_result);
-        pipe_result = Call(callfunc, arg_seqs, NULL, LINENO(n), n->n_col_offset, c->c_arena);
-    }
-    return pipe_result;
-}
-
-
-
-
 /* Do not name a variable 'expr'!  Will cause a compile error.
 */
 
@@ -2652,8 +2631,6 @@ ast_for_expr(struct compiling *c, const node *n)
                 switch(NCH(n)){
                     case 3:
                         return ast_for_transform(c, n);
-                    case 4:
-                        return ast_for_pipeline(c, n);
                     case 1:
                         break;
                     default:

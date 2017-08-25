@@ -77,6 +77,7 @@ if __name__ == '__main__':
             read_in_arg_status = True
         elif read_in_arg_status:
             dict_args[key] = arg_i
+            read_in_arg_status = False
 
     
     action_version = dict_args['v'] if'v' in dict_args else time.time()

@@ -21,7 +21,7 @@
 
 
 
-# **Flowpython Porject**
+# **Flowpython Project**
 
 See [Flowpython project](/flowpython/ReadMe.rst) here. 
 
@@ -32,13 +32,13 @@ See [Flowpython project](/flowpython/ReadMe.rst) here.
 - [Old-Works](#old-works)
 - [Add-where-syntax](#add-where-syntax)
 - [Fix-lambda-closure](#fix-where-syntax-in-lambda-closure)
-- [Add-switch-syntax](#add-switch-syntax)
 - [Fix-keyword-conflictions](#fix-keyword-conflictions)
 - [Powerful-pattern-matching](#powerful-pattern-matching)
 - [Arrow-Transform](#arrow-transform)
 - [Matching-Filter](#matching-filter)
 - [Library fp.py](#fp-module)
 - [Branches](#branches)
+- [Logs](#logs)
 
 ----
 
@@ -71,9 +71,6 @@ fix `if-expr` and add some new ways to define `lambda`.
     ```
 
 ### Add Where Syntax  
-    
-- add **where** syntax
-- date : before 2017-07-30
 - principle:
     - **Parse**:
         - change Grammar/Grammar
@@ -103,15 +100,14 @@ fix `if-expr` and add some new ways to define `lambda`.
 
 
 ### Fix Where Syntax in Lambda Closure
-- date : 2017-07-30
-    - Particularly, fixed **where** syntax for *lambda*, to make the **scope** of statements in *where* syntax to be the **closure of the innermost lambda**.  
+- Particularly, fixed **where** syntax for *lambda*, to make the **scope** of statements in *where* syntax to be the **closure of the innermost lambda**.  
     You can write following codes:
     ```python
     as-with x def as y def as z def ret_value where:
         ret_value = x + y +z
     ```
     instead of:
-    ```
+    ```python
     as-with x def as y def as z def tmp(x+y+z) where:
         def tmp(x,y,z):
             return x +y +z
@@ -122,43 +118,11 @@ fix `if-expr` and add some new ways to define `lambda`.
         ret = x +y +z
     ```
   
-
-### Add Switch Syntax
-- date: 2017-08-06
-- To give some support for Pattern Matching to Python.
-- principle:
-    the principle of following codes  
-    ```C  
-        switch (this):
-            case <case1> : 
-                ...
-            case <case2> :
-                ...
-            ...
-            otherwise:
-                ...
-    ```
-    works similar to
-    ```python
-        if this == <case1>:
-            ...
-        else:
-            if this == <case2>:
-                ...
-            else:
-                ...
-                else:
-                    ...
-    ```
-    Finally, I'd like to tell you that, in Python,
-    the **ast** of **if-elif-else** will be transformed to that of **if-else-[if-else]**, which I don't think to be a good way to generate **ast**. 
-
 ### Fix Keyword Conflictions
-- date: 2017-08-07
 * **fix-keyword**
-* **switch-case-otherwise -> condic-case-otherwise**
+* **switch-case-otherwise -> condef-case-otherwise**
 
-    Some new keywords brought by FlowPy, such as **where, switch, case, otherwise**, used to conflict with **Standard Library**
+    Some new keywords brought by Flowpython, such as **where, condef, case, otherwise**, used to conflict with **Standard Library**
     and some important Libaraies from **Third Party**.
 
     I fixed these conflictions with making the Parser module to ignore some grammar structures which would be checked in AST module.   
@@ -174,27 +138,27 @@ fix `if-expr` and add some new ways to define `lambda`.
         
         case = 1
         otherwise = 2
-        condic 1:
+        condef 1:
             case case => case 
             otherwise => otherwise
     ```
 
-    Take care that each syntax in [ **where, case, otherwise** ] are not real keywords, and **condic** is.
+    Take care that each syntax in [ **where, case, otherwise** ] are not real keywords, and **condef** is.
 
     ```python
-        condic = 1
+        condef = 1
         >>> SyntaxError: invalid syntax
     ```
 
 ### Powerful Pattern Matching
-- date: 2017-08-08
+
 * **pattern-matching**
 
-    There are four kinds of matching rules in Flowpy:
+    There are four kinds of matching rules in Flowpython:
     1. **comparing operator matching**
     ```C
 
-        condic [ == ] expr:
+        condef [ == ] expr:
             [>] 
             case test1 =>
                     <body1>
@@ -214,7 +178,7 @@ fix `if-expr` and add some new ways to define `lambda`.
             <body3>
     ```
     Each in `[], (), +(), +[], {} ` are called the **operator comparing mode**.     
-    **Giving a mode followed by *condic* keyword means giving a default mode.**  
+    **Giving a mode followed by *condef* keyword means giving a default mode.**  
     The relus are concluded [here](#conclusion-for-pattern-matching)  
     
         for operator comparing mode "[<optional>]"
@@ -231,7 +195,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     
     2. **callable object matching**
     ```C
-    condic (f) expr:
+    condef (f) expr:
         case test1 => 
             <body1>
         [!=] 
@@ -249,7 +213,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     3. **dual callable comparing matching**
 
     ```C
-    condic {f} expr:
+    condef {f} expr:
         case test1 => 
             <body1>
     ```
@@ -262,7 +226,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     4. **Python Pattern Matching**
     - This one is the implementation for traditional pattern matching in CPython.
     ```C
-    condic +[>] 1:
+    condef +[>] 1:
         case a:2   =>
             <body1>
         +(type) 
@@ -277,24 +241,25 @@ fix `if-expr` and add some new ways to define `lambda`.
     3. **Take care**  
     if you write the following codes without default mode,
     ```C
-    condic [1,2,3]:
+    condef [1,2,3]:
         ...
-    condic {1,2,3}:
+    condef {1,2,3}:
         ...
-    condic (1,2,3):
+    condef (1,2,3):
         ...
     ```
     it will lead to **syntax Error**. But you can use this instead:
     ```C
-    condic() [1,2,3]:
+    condef() [1,2,3]:
         ...
-    condic[] {1,2,3}:
+    condef[] {1,2,3}:
         ...
-    condic{} (1,2,3):
+    condef{} (1,2,3):
         ...
     ```
 
 #### Conclusion for Pattern Matching
+<center>
 
 | Matching Method                    | Identity      |       
 | -------------                      |:-------------:| 
@@ -303,9 +268,10 @@ fix `if-expr` and add some new ways to define `lambda`.
 | dual callable comparing matching   | {`callable`}  | 
 | python pattern matching(comparing) | +[`operator`] | 
 | python pattern matching(callable)  | +(`callable`) |          
+</center>
 
 ### Arrow Transform
-- date: 2017-08-10
+
 - **arrow transform expression**  
     This one looks like **lambda**, and they have quite a lot of features in common.  
     Look at this example:  
@@ -331,9 +297,9 @@ fix `if-expr` and add some new ways to define `lambda`.
     The grammar identity `.` means **Take It As Lazy**
 
 ### Matching Filter
-- date: 2017-08-10
+
     ```C
-        condic[] [1,2,3]:
+        condef[] [1,2,3]:
             +(type)
             case (*a,b) -> a:list => 
                 print("just match 'a' with 'list' ")
@@ -344,7 +310,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     ```
 
 ### FP Module
-- date: 2017-08-13
+
 - library: fp.py
 
 To support some basic operations in Functional Programming, here are methods implemented in `flowpython.fp`.
@@ -360,23 +326,23 @@ norec_flatten  =  norecursion.lazy.flatten
 
 
 # fastmap( use generator instead of map in original Python )
-fastmap([1,2,3], .x -> x+1) -> list(_)
+fastmap(.x -> x+1, [1,2,3]) -> list(_)
 # -> [2,3,4]
 
-strict_flat_map([1,2,3], .x->x+1) # -> [2,3,4] 
+strict_flat_map(.x->x+1, [1,2,3]) # -> [2,3,4] 
 
 # flatten
 flatten([1,2,[3,4],[[5],[6]]]) -> list(_)
 # -> [1,2,3,4,5,6]
 
 # compose : Callable->Callable->Any
-f1 -> compose(_)(f2)
+f1 -> compose(f2)(_)
 
 # andThen : Callable->Callable->Any
-f1 -> andThen(_)(f2)
+f1 -> andThen(f2)(_)
 
 # foreach : Callable->Callable->Any
-range(20) -> foreach(_)(print) 
+range(20) -> foreach(print)(_) 
 # -> 0 \n 1 \n 2 ...
 
 
@@ -387,9 +353,9 @@ foldl # (not recommended)
 range(20) -> foldr(. x,y -> print(x) or x+y)(0)(_) 
 range(20) -> foldr(. x,y -> print(y) or x+y)(0)(_)
 
-# flat_map : flat_map -> Iterator -> Callable -> Iterator
+# flat_map : Iterator -> Callable -> Iterator
 # default lazy
-flat_map([[1,2,[3,4],[5,6]],[7,8]])(.x->x+1) -> list(_)
+flat_map(.x->x+1)([[1,2,[3,4],[5,6]],[7,8]]) -> list(_)
 # -> [2,3,4,5,6,7,8,9]
 
 # object in norecursion class use no recursive methods.
@@ -400,7 +366,7 @@ norec_flatten([[1,[2],[[3]],[[[4]]]]] -> list(_)
 ```
 
 ### Branches
-- date: 2017-08-15   
+ 
 An easy way to define `if-elif-else` statements:  
 ( It's not `guard` in Haskell ! )
 ```python
@@ -427,9 +393,52 @@ An easy way to define `if-elif-else` statements:
 ```
 
 
+## Pipeline
+
+Sorry for the shortage of documents for new gramamr, and I'm busy with my new semester.   
+It would be completed as sooner as possible.
+```python
+    
+    >> 1 ->> .x -> x*10 => .x-> x+1 
+    >> 11
+
+    >> f1 = . seq -> map(.x->x%2, seq)
+    >> f2 = . seq -> filter(.x -> x, seq) ->> list
+    >> res = range(100) ->> f1 => f2 => groupby(.x->x)  => groupby(.x->len(x)) where:
+        from flowpython.fp import groupby
+    
+    >> res ->> groupby(.x->x) => lambda d: map(.k->(k,len(d[k])), d) ->> dict
+    >> {1:50}
+
+```
 
 
 
+## Logs
+- date : before 2017-07-30
+- date : 2017-07-30
+    - Add **where** syntax
+- date: 2017-08-06
+    - Fix `closure` for `where` syntax in case of **Lambda Definition**.
+- date: 2017-08-07
+    - Add `switch syntax`.
+- date: 2017-08-08
+    - Fix the keyword conflicts against the standard libraries and the packages from Third Party.
+    - Change the grammar of `switch` syntax.  
+        `switch-case-otherwise -> condef-case-otherwise`
+- date: 2017-08-10
+    - Add `pattern matching` syntax.
+    - Add arrow transform expression.
+    - Remove `switch` syntax(which can be totally replaced by `pattern matching`).
+- date: 2017-08-10
+    - Add matching filter syntax for `pattern matching` .
+- date: 2017-08-13
+    - Add module `fp.py`.
+- date: 2017-08-15  
+    - Add `branches` grammar.
+- data: 2017-08-25
+    - Add `pipeline` grammar.
+    - Change keyword for pattern matching from `condic` to `condef`.
 
 
 
