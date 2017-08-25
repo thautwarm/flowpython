@@ -55,7 +55,7 @@ flow_map    = as-with f def as *args def map(f, *args)
 flow_reduce = as-with f def as *args def reduce(f, *args)
 ## ===================
 fastmap     = as-with f def as *args def (f(*items) for items in zip(*args))
-fastmap.__doc__ = """Generators work faster! Howerver they cannot be deepcopied in Python and can be evaluated only once. """
+fastmap.__doc__ = """Generators might work faster! Howerver they cannot be deepcopied in Python and can be evaluated only once. """
 # ====================
 
 flatten  = as-with seq:list def that where:
