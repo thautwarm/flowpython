@@ -158,43 +158,8 @@ Read `Arrow Transform  <https://github.com/thautwarm/flowpython/blob/master/Read
 Revision
 ------------
 
-More `Distribution History <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md>`_  here.
+See `Distribution History <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md>`_  here.
 
-- date: 2017-07-28
-    * **where**  syntax 
-
-    **with-in-with-def** => **with-in-with-break**
-
-- date: 2017-07-29
-    * fix **test if else test**
-
-    * **where** syntax 
-        * **with-in-with-def** => **where - syntax**
-
-    * **lambda**
-        * add two new methods to define "lambda".
-
-- date: 2017-08-06
-    * **switch-case-otherwise**
-- date: 2017-08-07
-    * **fix-keyword**
-    * **switch-case-otherwise -> condic-case-otherwise**
-    * See `fix-keyword-contradictions <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#fix-keyword-conflictions>`_
-
-- date: 2017-08-09
-    * **add-pattern-matching-syntax**
-    * See `Powerful Pattern Matching <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#powerful-pattern-matching>`_
-- date: 2017-08-10
-    * **add-arrow-transform(strict form of lambda)**
-    * See `Arrow Transform <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#arrow-transform>`_
-    * add a new syntax to pattern matching : `Matching Filter <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#matching-filter>`_
-
-- date: 2017-08-13
-    * add a module named **flowpython.fp** to give basic support to Functional Programming.
-
-- date: 2017-08-15
-    * add a new way to define **if-elif-else** statements.
-    * See `Branches <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#branches>`_
 
 Compile FlowPython For Yourself
 --------------------------------------

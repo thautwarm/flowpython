@@ -14,26 +14,48 @@ import warnings
 compose = .f1 -> .f2 -> . *args, **kwargs -> f2(*args, **kwargs) -> f1(_)
 andThen = .f1 -> .f2 -> . *args, **kwargs -> f1(*args, **kwargs) -> f2(_)
 
+def AndThen(*func_stack):
+    def _1(*args, **kwargs):
+        for func in func_stack:
+            try:
+                mid = func(mid)
+            except:
+                mid = func(*args, **kwargs)
+        return mid
+    return _1
+
+def Compose(*func_stack):
+    def _1(*args, **kwargs):
+        for func in func_stack[::-1]:
+            try:
+                mid = func(mid)
+            except:
+                mid = func(*args, **kwargs)
+        return mid
+    return _1
+            
+
+
 # ===============
 
-foreach = . self -> . f   -> None where:
+foreach = . f       ->. self  -> None where:
         for item in self:
             f(item)
 
-groupby = . self ->. function -> that where:
+groupby = . function ->. self -> that where:
     that = defaultdict(list) 
-    self -> foreach(_)(do) where:
+    self ->> foreach(do) where:
         def do(item):
             that[function(item)].append(item) 
 
 
 # map and reduce
 # ====================
-flow_map    = as-with *args def as f def map(f, *args)
-flow_reduce = as-with *args def as f def reduce(f, *args)
+flow_map    = as-with f def as *args def map(f, *args)
+flow_reduce = as-with f def as *args def reduce(f, *args)
 ## ===================
-fastmap     = as-with *args def as f def (f(*items) for items in zip(*args))
-fastmap.__doc__ = """Generators work faster! But they cannot be deepcopied in Python and can be evaluated only once. """
+fastmap     = as-with f def as *args def (f(*items) for items in zip(*args))
+fastmap.__doc__ = """Generators work faster! Howerver they cannot be deepcopied in Python and can be evaluated only once. """
 # ====================
 
 flatten  = as-with seq:list def that where:
@@ -42,24 +64,24 @@ flatten  = as-with seq:list def that where:
             if not isinstance(item, list):
                 yield item
             else:
-                for item in _f(item): yield item
+                yield from _f(item)
     that = _f(seq)
 
-flat_map = flatten -> andThen(_)(flow_map)
+flat_map = lambda f: andThen(flatten)(flow_map(f))
 
 
 # ==========================
 # fold
 foldr = . f -> . zero -> .seq -> ret where:
     warnings.warn("Not recommend to use 'fold' because there is no TCO in Python!")
-    condic seq:
+    condef seq:
         case []     => ret = zero 
         +[]
         case (a,*b) => ret = f(a, foldr(f)(zero)(b))
 
 foldl = . f -> . zero -> .seq -> ret where:
     warnings.warn("Not recommend to use 'fold' because there is no TCO in Python!")
-    condic seq:
+    condef seq:
         case []     => ret = zero
         +[]
         case (*a,b) => ret = f(foldl(f)(zero)(a), b)
@@ -79,8 +101,8 @@ class strict:
                 else:
                     _f(item)
         _f(seq)
-    fastmap = as-with *args def as f def [f(*items) for items in zip(*args)]
-    flat_map = flatten -> andThen(_)(flow_map)
+    fastmap = as-with f def as *args def [f(*items) for items in zip(*args)]
+    flat_map = lambda f: andThen(flatten)(flow_map(f))
 
 
 class norecursion:
@@ -117,6 +139,7 @@ class norecursion:
                     idx.append(0)
     
     class strict:
+        @staticmethod
         def flatten(seq:list):
             """
             this is the implementation of function flatten without recursion.
