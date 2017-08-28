@@ -8,14 +8,15 @@ date: 25/07/17
 import time
 # =====================
 # user configure files
-pythonDistPath = './PythonDist'
-flowpyDistPath = './flowpython'  
-tempfilesPath  = './temp_version/{}'
+pythonDistPath = './PythonDist/{py_version}'
+flowpyDistPath = './flowpython/{py_version}'  
+tempfilesPath  = './temp_version/{py_version}/{}'
 # ======================
 
+support_version  =  ['py36','py35']
 # =====================
 # version info
-__version__ = 0.1
+__version__ = "0.2.2"
 modules={
     'ast':'Python/ast.c',
     'symtable':'Python/symtable.c',
@@ -79,6 +80,12 @@ if __name__ == '__main__':
             dict_args[key] = arg_i
             read_in_arg_status = False
 
+    if 'pyv' not in dict_args:
+        dict_args['pyv'] = "py36"
+    else:
+        if dict_args['pyv'] not in support_version:
+            raise Exception(f"Do not support version {dict_args['pyv']} \n Supported versions are {support_version}")
+        dict_args['py_version'] = dict_args['pyv']
     
     action_version = dict_args['v'] if'v' in dict_args else time.time()
     tempfilesPath = tempfilesPath.format(action_version)
