@@ -10,7 +10,7 @@ import time
 # user configure files
 pythonDistPath = './PythonDist/{py_version}'
 flowpyDistPath = './flowpython/{py_version}'  
-tempfilesPath  = './temp_version/{py_version}/{}'
+tempfilesPath  = './temp_version/{py_version}/{commit_version}'
 # ======================
 
 support_version  =  ['py36','py35']
@@ -85,11 +85,13 @@ if __name__ == '__main__':
     else:
         if dict_args['pyv'] not in support_version:
             raise Exception(f"Do not support version {dict_args['pyv']} \n Supported versions are {support_version}")
-        dict_args['py_version'] = dict_args['pyv']
-    
+        
+    dict_args['py_version'] = dict_args['pyv']
     action_version = dict_args['v'] if'v' in dict_args else time.time()
-    tempfilesPath = tempfilesPath.format(action_version)
-
+    tempfilesPath  = tempfilesPath.format(commit_version = action_version, py_version = dict_args['pyv'])
+    pythonDistPath = pythonDistPath.format(py_version = dict_args['pyv']) 
+    flowpyDistPath = flowpyDistPath.format(py_version = dict_args['pyv']) 
+    
     def version_control(id_str):
         _to, from_ ,temp = (pythonDistPath, flowpyDistPath, tempfilesPath) if id_str == 'commit' else\
                            (flowpyDistPath, pythonDistPath, tempfilesPath) if id_str == 'back' else\
