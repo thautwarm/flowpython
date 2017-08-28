@@ -3557,7 +3557,6 @@ ast_for_assert_stmt(struct compiling *c, const node *n, asdl_seq *where_handler)
         expr2 = ast_for_expr(c, CHILD(n, 3));
         if (!expr2)
             return NULL;
-            
         return Assert(expr1, expr2, LINENO(n), n->n_col_offset, c->c_arena);
     }
     PyErr_Format(PyExc_SystemError,
