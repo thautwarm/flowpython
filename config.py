@@ -81,7 +81,7 @@ if __name__ == '__main__':
             read_in_arg_status = False
 
     if 'pyv' not in dict_args:
-        dict_args['pyv'] = "py36"
+        dict_args['pyv'] = "py35"
     else:
         if dict_args['pyv'] not in support_version:
             raise Exception(f"Do not support version {dict_args['pyv']} \n Supported versions are {support_version}")
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     elif main_arg == 'test':
 
         os.chdir(pythonDistPath)
-        testfilePath = '../test'
+        testfilePath = '../../test'
 
         if 'f' in dict_args:
             files = filter(lambda x:x, dict_args['f'].split(" "))

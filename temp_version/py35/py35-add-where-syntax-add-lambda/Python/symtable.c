@@ -1362,6 +1362,35 @@ symtable_visit_stmt(struct symtable *st, stmt_ty s)
 }
 
 static int
+symtable_curry(struct symtable *st, expr_ty e, asdl_seq* multistatements){
+        
+        if (!GET_IDENTIFIER(lambda))
+            VISIT_QUIT(st, 0);
+        
+        if (e->v.Lambda.args->defaults)
+            VISIT_SEQ(st, expr, e->v.Lambda.args->defaults);
+        
+        if (e->v.Lambda.args->kw_defaults)
+            VISIT_SEQ_WITH_NULL(st, expr, e->v.Lambda.args->kw_defaults);
+    
+        if (!symtable_enter_block(st, lambda,
+                                  FunctionBlock, (void *)e, e->lineno,
+                                  e->col_offset))
+            VISIT_QUIT(st, 0);
+
+        VISIT(st, arguments, e->v.Lambda.args);
+        if (e->v.Lambda.body->kind == Lambda_kind){
+            if (!symtable_curry(st, e->v.Lambda.body, multistatements))
+                VISIT_QUIT(st, 0);
+        }
+        else{
+            VISIT_SEQ(st, stmt, multistatements);
+            VISIT(st, expr, e->v.Lambda.body);
+        }
+        return symtable_exit_block(st, (void *)e);
+}
+
+static int
 symtable_visit_expr(struct symtable *st, expr_ty e)
 {
     if (++st->recursion_depth > st->recursion_limit) {

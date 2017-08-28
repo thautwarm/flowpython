@@ -2804,7 +2804,7 @@ ast_for_testlist(struct compiling *c, const node* n)
 }
 
 static stmt_ty
-ast_for_expr_stmt(struct compiling *c, const node *n, const node *n, asdl_seq* where_handler)
+ast_for_expr_stmt(struct compiling *c, const node *n, asdl_seq* where_handler)
 {
     REQ(n, expr_stmt);
     /* expr_stmt: testlist_star_expr (augassign (yield_expr|testlist)

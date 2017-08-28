@@ -37,7 +37,7 @@ varargslist: (vfpdef ['=' test] (',' vfpdef ['=' test])* [','
 vfpdef: NAME
 
 stmt: simple_stmt | compound_stmt
-simple_stmt: small_stmt (';' small_stmt)* [';'] NEWLINE
+simple_stmt: small_stmt ((';' small_stmt)* [';'] NEWLINE | where_handler_stmt)
 small_stmt: (expr_stmt | del_stmt | pass_stmt | flow_stmt |
              import_stmt | global_stmt | nonlocal_stmt | assert_stmt)
 expr_stmt: testlist_star_expr (augassign (yield_expr|testlist) |
