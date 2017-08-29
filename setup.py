@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 import io
-with io.open(f'./flowpython/ReadMe.rst', encoding='utf-8') as f:
+with io.open('./flowpython/ReadMe.rst', encoding='utf-8') as f:
     readme = f.read()
 import os
 cat = os.path.join
