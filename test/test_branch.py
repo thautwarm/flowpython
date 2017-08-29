@@ -2,7 +2,7 @@ print("branches No.1:")
 | 1==2 => a = False
 | 2==3 => a = False
 | 3    => a = True
-print(f'branch res is {a}')
+print('branch res is {a}'.format(a=a))
 
 b = ret where:
     | 1 == 2 => ret = 1
