@@ -11,6 +11,8 @@
 
 #include <assert.h>
 
+
+// for pattern matching
 #define PM_MODE 0
 #define COMP_MODE 1
 #define UNARY_MODE 2

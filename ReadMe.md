@@ -39,6 +39,7 @@ See [Flowpython project](/flowpython/ReadMe.rst) here.
 - [Library fp.py](#fp-module)
 - [Branches](#branches)
 - [Logs](#logs)
+- [Pipeline/Monad](#pipeline)
 
 ----
 
