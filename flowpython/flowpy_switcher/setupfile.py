@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
-
 import sys
 version = sys.version_info.minor
 class windows:
 	reps = {
-		'py3{}/python3.dll'.format(version),
-		'py3{}/python36.dll'.format(version),
-		'py3{}/pythonw.exe'.format(version),
-		'py3{}/python.exe'.format(version)
+		'python3.dll',
+		'python36.dll',
+		'pythonw.exe',
+		'python.exe'
 		}
 class linux:
 	reps = {
-	'py3{}/python'.format(version)
+	'python'
 		}
 
 import os,json
@@ -24,10 +23,10 @@ except KeyError:
 
 cat = os.path.join
 def setup(path, arch, platform):
-	flowpy_dir_path = cat(makedir_from(rootpath),f"{platform}-{arch}") 
+	flowpy_dir_path = cat(makedir_from(rootpath),"py3{version}/{platform}-{arch}".format(version=version, platform = platform, arch = arch)) 
 	save_dir_path   = cat(makedir_from(rootpath),'origin_py') 
 	origin_dir_path = makedir_from(path)
-	reps            = eval(f"{platform}.reps")
+	reps            = eval("{platform}.reps".format(platform = platform))
 	manager_path    = cat(user_path, '.flowpy')
 	def enable():
 		if not os.path.exists(manager_path):pass
@@ -40,7 +39,7 @@ def setup(path, arch, platform):
 				# 		reps.clear()
 				# 	otherwise =>
 				# 		pass
-				if json.load(a)['enabled'] == 'true':
+				if json.load(f)['enabled'] == 'true':
 					print("Flowpython has been enabled.")
 					reps.clear()
 
