@@ -38,8 +38,9 @@ See [Flowpython project](/flowpython/ReadMe.rst) here.
 - [Matching-Filter](#matching-filter)
 - [Library fp.py](#fp-module)
 - [Branches](#branches)
-- [Logs](#logs)
 - [Pipeline/Monad](#pipeline)
+- [Logs](#logs)
+
 
 ----
 
