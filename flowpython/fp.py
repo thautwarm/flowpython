@@ -52,6 +52,7 @@ groupby = . function ->. self -> that where:
 # map and reduce
 # ====================
 flow_map    = as-with f def as *args def map(f, *args)
+flow_filter = as-with f def as *args def filter(f, *args)
 flow_reduce = as-with f def as *args def reduce(f, *args)
 ## ===================
 fastmap     = as-with f def as *args def (f(*items) for items in zip(*args))

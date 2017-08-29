@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
+
+import sys
+version = sys.version_info.minor
 class windows:
 	reps = {
-		'python3.dll',
-		'python36.dll',
-		'pythonw.exe',
-		'python.exe'
+		'py3{}/python3.dll'.format(version),
+		'py3{}/python36.dll'.format(version),
+		'py3{}/pythonw.exe'.format(version),
+		'py3{}/python.exe'.format(version)
 		}
 class linux:
 	reps = {
-	'python'
+	'py3{}/python'.format(version)
 		}
 
 import os,json
