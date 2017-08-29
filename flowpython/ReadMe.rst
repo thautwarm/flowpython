@@ -22,14 +22,14 @@ How to Get Flowpython
 
 VERSION
 ----------
-flowpython  == 0.2.2
+flowpython  == 0.2.3
 
-CPython == 3.6.2
+CPython == 3.6.x/3.5.x
 
 
 Requirement
 ------------
-CPython == 3.6
+CPython == 3.6.x/3.5.x
 
 C/C++ Compiler 
 

@@ -24,7 +24,12 @@
 
 # **Flowpython Project**
 
-See [Flowpython project](/flowpython/ReadMe.rst) here. 
+- Version : 0.2.3
+
+- See [Flowpython project](/flowpython/ReadMe.rst) here. 
+
+
+
 
 # **History**
 
