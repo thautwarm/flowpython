@@ -7,7 +7,7 @@ import os
 cat = os.path.join
 setup(
     name = 'flowpython',
-    version = '0.2.1.1',
+    version = '0.2.3',
     keywords='gramamr, ast, readability',
     description = "Additional Grammar Compatible to CPython",
     long_description=readme,
@@ -18,7 +18,8 @@ setup(
     packages = find_packages(),
     include_package_data = True,
     platforms  = ['windows','linux'],
-    classifiers=['Programming Language :: Python :: 3.6','Programming Language :: Python :: Implementation :: CPython']
+    classifiers=['Programming Language :: Python :: 3.6','Programming Language :: Python :: Implementation :: CPython',
+                 'Programming Language :: Python :: 3.5','Programming Language :: Python :: Implementation :: CPython']
 )
 try:
 	os.remove(cat(os.environ["HOME"], '.flowpy'))

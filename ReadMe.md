@@ -46,6 +46,7 @@
 - [Branches](#branches)
 - [Pipeline/Monad](#pipeline)
 - [Logs](#logs)
+- [Auto Compose](#auto-compose)
 
 
 ----
@@ -106,6 +107,15 @@ fix `if-expr` and add some new ways to define `lambda`.
                 If your want to get a complete knowledge about how Python works, you should understand how the two C Module works firstly.
     
 
+### Auto Compose
+
+    ```python
+    from flowpython.composing import auto_logger, auto_compose, flow_map, flow_filter
+    auto_logger(__builtin__.__dict__)
+    
+    >> sum.filter(.x->x,[0,1,2,3,0])
+    >> 6
+    ``` 
 
 ### Fix Where Syntax in Lambda Closure
 - Particularly, fixed **where** syntax for *lambda*, to make the **scope** of statements in *where* syntax to be the **closure of the innermost lambda**.  
