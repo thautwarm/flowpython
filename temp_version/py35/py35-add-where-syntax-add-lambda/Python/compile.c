@@ -4417,7 +4417,7 @@ assemble_lnotab(struct assembler *a, struct instr *i)
     d_lineno = i->i_lineno - a->a_lineno;
 
     assert(d_bytecode >= 0);
-    assert(d_lineno >= 0);
+    // assert(d_lineno >= 0);
 
     if(d_bytecode == 0 && d_lineno == 0)
         return 1;
