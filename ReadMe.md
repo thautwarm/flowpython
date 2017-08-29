@@ -1,7 +1,8 @@
 # Install & Uninstall
 
-- Just for Windows 32bit/64bit and Linux 64bit for CPython 3.6.2.
-- Will support CPython 3.5.2 and CPython 3.7 sooner.
+- Support Windows 32bit/64bit and Linux 64bit for CPython 3.6.x/3.5.x.
+- Will support CPython 3.7 sooner.
+- Will never support CPython 2.x :)
 
 
 - use `setup.py`

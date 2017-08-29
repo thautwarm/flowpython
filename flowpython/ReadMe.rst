@@ -111,13 +111,13 @@ And we know that there are some powerful tools in some FP languages, like
 
     .. code:: python
 
-        condic +[<] 1:
+        condef +[<] 1:
             case a:2   => 
                 assert a == 1 and a < 2
             +(.x->type(x))
             case a:int =>
                 assert a == 1 and type(a) == int
-        condic 1:
+        condef 1:
             +(.x->2*x)
             case a:3   => 
                 assert a == 1 and a*2 == 3
@@ -128,13 +128,15 @@ And we know that there are some powerful tools in some FP languages, like
                 ...
         
         # new syntax: matching filter
-        condic[] [1,2,3] :
+        condef[] [1,2,3] :
             +(type) 
             case (*a,b)->a:list =>
                 assert type(a) == list
             otherwise           =>
                 assert False,"emmmm"
 
+
+There are more optional grammars, just see GitHub `Link  <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md`_. 
         
 More about Pattern Matching to see `TestFile <https://github.com/thautwarm/flowpython/blob/master/test/test_patm.py>`_
 And `Distribute History <https://github.com/thautwarm/flowpython/blob/master/ReadMe.md#powerful-pattern-matching>`_
