@@ -4,7 +4,7 @@ version = sys.version_info.minor
 class windows:
 	reps = {
 		'python3.dll',
-		'python36.dll',
+		'python3{}.dll'.format(version),
 		'pythonw.exe',
 		'python.exe'
 		}
