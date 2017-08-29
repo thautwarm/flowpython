@@ -86,8 +86,8 @@ if __name__ == '__main__':
 				return ret
 			pypath  = dict_args['p'] if 'p' in dict_args else getpypath()
 			setup(pypath, arch, platf)(mode)
-		except:
-			raise BaseException('unknown platform...')
+		except Exception as e:
+			raise BaseException('unknown platform...') from e
 
 
 

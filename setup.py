@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
 import io
-import sys
-version = sys.version_info.minor
-pyv = 'py36' if version == '6' else 'py35'
-with io.open(f'./flowpython/{pyv}/ReadMe.rst', encoding='utf-8') as f:
+with io.open(f'./flowpython/ReadMe.rst', encoding='utf-8') as f:
     readme = f.read()
 import os
 cat = os.path.join
