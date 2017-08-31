@@ -1,0 +1,1 @@
+The precompiled binaries can be found at [Release Page](https://github.com/thautwarm/flowpython/releases).
