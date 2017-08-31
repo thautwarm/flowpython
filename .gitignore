@@ -2,3 +2,4 @@ PythonDist/
 .vscode
 __pycache__/
 _build/
+release/
