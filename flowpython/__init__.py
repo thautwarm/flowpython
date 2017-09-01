@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __version__ = VERSION = "0.2.3"
 __author__  = AUTHOR  = "thautwarm"
-__lisence__ = LISENCE = "MIT"
+__license__ = LICENSE = "MIT"
 __doc__     = DOC     =    \
 """
 Additional 
@@ -70,6 +70,6 @@ class helper:
 	doc      = __doc__
 	version  = __version__
 	author	 = __author__
-	lisence  = __lisence__
+	license  = __license__
 
 	 
