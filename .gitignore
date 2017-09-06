@@ -3,3 +3,4 @@ PythonDist/
 __pycache__/
 _build/
 release/
+.git/

@@ -12,7 +12,7 @@ else:
     cat = os.path.join
     setup(
         name = 'flowpython',
-        version = '0.2.3',
+        version = '0.2.3.1',
         keywords='gramamr, ast, readability',
         description = "Additional Grammar Compatible to CPython",
         long_description=readme,
