@@ -172,24 +172,46 @@ Compile FlowPython For Yourself
     - I have tried with **Cygwin** but finally failed. 
 
 **For Linux User**
-
-Firstly, you should have a C/C++ compiler like: 
+    Firstly, you should have a C/C++ compiler like: 
     
     - https://gcc.gnu.org/
     
     - http://releases.llvm.org/
 
-To give some advice, you can easily get C/C++ compiler with    
+    To give some advice, you can easily get C/C++ compiler with    
     
     - **MinGW/Cygwin** on **windows** (Failed, please have a try with Visual Studio)
 
     - **sudo apt-get install gcc/clang** on **Ubuntu/Debian/Deepin** (maybe it also works for MacOS).
 
-And then you should have a CPython distribution like Python-3.6.2, like:
+Next, you can get the Flowpython sources which can be directly compiled in the same way as CPython, because Flowpython is truly an adjustment about CPython.
+
+The sources can be found at `ForCPython 3.5 <https://github.com/thautwarm/cpython/tree/3.5>`_  and `ForCPython 3.6 <https://github.com/thautwarm/cpython/tree/3.6>`_.
+Clone them and just type command `./configure CC=clang` and `make` is okay.
+
+.. code:: shell
+
+    ./configure CC=clang
+    make
+    ...
+    python
+    Python 3.5.4+ (heads/3.5-dirty:0a8ff1b, Oct  8 2017, 13:56:29) 
+    [GCC 4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)] on linux
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> .x -> x+1
+    <function <lambda> at 0x7f159379aae8>
+
+But for someone who want to get CPython source for yourself for some special reasons, 
+there might be something useful in the following sections.
+
+For Developers
+---------------
+
+You Could get a CPython distribution like Python-3.6.x and Python-3.5.x at
     
     - https://www.python.org/
 
-And then you should replace the files of the standard CPython distribution with Flowpython.
+And then you should **replace the files of the standard CPython distribution with those of Flowpython's** (They are at `flowpython/flowpython/$pythonVersion/`).
 
 If you change the variable of **pythonDistPath** in the file **config.py** with  the path of your Python distribution, 
 
@@ -219,19 +241,15 @@ just run this command:
 
 .. code:: shell
 
-    ./conf make -m all
+    ./conf make -m all -pyv [py36 | py35]
     
 And then you can enjoy Flowpython!
 
-
-For Developers
----------------
 
 I wrote config.py as the project-manage tool of Flowpython.
 
 It assembled the following modules:
     - make
-    - git
     - customer version controler 
     - debug&unittest
 
@@ -239,11 +257,11 @@ It can be used like these way:
 
 .. code:: shell
 
-        ./conf commit -v <version_name>
-        ./conf recover 
-        ./conf test 
-        ./conf make -m clean
-        ./conf make -m ast
+        ./conf commit -v <version_name> -pyv [py35 | py36]
+        ./conf recover -pyv [py35 | py36]
+        ./conf test -pyv [py35 | py36]
+        ./conf make -m clean -pyv [py35 | py36]
+        ./conf make -m ast   -pyv [py35 | py36]
         ...
 
 It seems to be kind of complicated but it's quite easy to understand and operate in fact.

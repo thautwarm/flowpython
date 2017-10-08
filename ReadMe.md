@@ -28,6 +28,27 @@
 
 - See [Flowpython project](/flowpython/ReadMe.rst) here. 
 
+# **SourceForCompiling**
+    
+- [BasedOnCPython3.5](https://github.com/thautwarm/cpython/tree/3.5)
+
+- [BasedOnCPython3.6](https://github.com/thautwarm/cpython/tree/3.6)
+
+Clone them and  
+```shell
+./configure CC=clang
+make
+...
+
+python
+Python 3.5.4+ (heads/3.5-dirty:0a8ff1b, Oct  8 2017, 13:56:29) 
+[GCC 4.2.1 Compatible Clang 3.8.0 (tags/RELEASE_380/final)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> .x -> x+1
+<function <lambda> at 0x7f159379aae8>
+
+```
+
 
 
 
