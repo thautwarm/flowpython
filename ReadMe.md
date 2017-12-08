@@ -1,6 +1,6 @@
 # Install & Uninstall
 
-- Support Windows 32bit/64bit and Linux 64bit for CPython 3.6.x/3.5.x.
+- Support Windows 32bit/64bit and Linux 64bit for CPython 3.6.x/3.5.x.(**Currrent binaries do not support Python3.6.3 yet, and I will compile the sources of 3.6.3 to make a corresponding release sooner.**
 - Will support CPython 3.7 sooner.
 - Will never support CPython 2.x :)
 
@@ -73,6 +73,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 ----
 
 ### Old Works
+
+(P.S This is not available for CPython 3.5.x
 
 fix `if-expr` and add some new ways to define `lambda`.
 
