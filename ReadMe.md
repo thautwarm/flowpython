@@ -4,21 +4,9 @@
 - Will support CPython 3.7 sooner.
 - Will never support CPython 2.x :)
 
+You now have to go to release page and download the binaries directly...
 
-- use `setup.py`
-```	
-	python setup.py install
-```
-
-- use `pip`
-```
-	pip install flowpython -i <mirror-url>
-```
-
-- enable/disable Flowpython grammar
-```
-	python -m flowpython -m enable/disable
-```
+After downloading, just  replace the original files with flowpython items.
 
 
 

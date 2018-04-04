@@ -6,19 +6,7 @@ Additional Grammar Compatible to CPython
 How to Get Flowpython
 -----------------------
 
-- Intsall 
-
-.. code:: shell
-    
-    pip install flowpython
-
-
-- Enable/Disable Flowpython grammar
-
-.. code:: shell
-
-    python -m flowpython -m enable/disable
-
+Go to release page...
 
 VERSION
 ----------
