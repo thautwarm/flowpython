@@ -1,6 +1,6 @@
 # Install & Uninstall
 
-- Support Windows 32bit/64bit and Linux 64bit for CPython 3.6.x/3.5.x.(**Currrent binaries do not support Python3.6.3 yet, and I will compile the sources of 3.6.3 to make a corresponding release sooner.**
+- Support Windows 32bit/64bit and Linux 64bit for CPython 3.6.x/3.5.x.
 - Will support CPython 3.7 sooner.
 - Will never support CPython 2.x :)
 
