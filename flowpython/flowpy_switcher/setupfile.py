@@ -32,13 +32,6 @@ def setup(path, arch, platform):
 		if not os.path.exists(manager_path):pass
 		else:
 			with open(manager_path, 'r') as f:
-				# condic f:
-				# 	+[==]
-				# 	case a -> json.load(a)['enabled']:'true'  =>
-				# 		print("Flowpython has been enabled.")
-				# 		reps.clear()
-				# 	otherwise =>
-				# 		pass
 				if json.load(f)['enabled'] == 'true':
 					print("Flowpython has been enabled.")
 					reps.clear()
@@ -65,7 +58,7 @@ def setup(path, arch, platform):
 			with open(manager_path, 'w') as f:
 
 				# {'enabled':'true'} -> json.dump(_, f)
-				json.dump({'enabled':'true'}, f)
+				json.dump({'enabled': 'true'}, f)
 
 
 	def disable():
@@ -73,24 +66,6 @@ def setup(path, arch, platform):
 			print("Disable before enabled!!!")
 			return
 		with open(manager_path, 'r') as f:
-
-			# condic f:
-			# 	+[==]
-			# 	case a -> json.load(a)['enabled']:'true' =>
-			# 		for rep in reps:
-			# 			# ================== DISABLE
-			# 			oripy_file  =  cat(origin_dir_path, rep)
-			# 			save_file   =  cat(save_dir_path  , rep)
-			# 			save_file   -> moveto(_, oripy_file)
-			# 			f"disabled -- {rep}" -> print(_)
-			# 			# ==================
-			# 		if platform == 'linux':
-			# 			os.system(f'chmod 777 {path}')
-			# 		with open(manager_path, 'w') as f:
-			# 			{'enabled':'false'} -> json.dump(_, f)
-
-			# 	otherwise =>
-			# 		print("Flowpython hasn't been enabled yet!!!")
 			
 			if json.load(f)['enabled'] == 'true':
 				for rep in reps:
@@ -105,14 +80,6 @@ def setup(path, arch, platform):
 					json.dump({'enabled':'false'}, f)
 			else:
 				print("Flowpython hasn't been enabled yet!!!")
-			
-
-
-
-	# return .option -> ret() where:
-	# 	ret = enable   if option == 'enable'   else \
-	# 		  disable if option == 'disable' else \
-	# 		  .-> print(f'No option called {option} => do nothing.')	
 
 	
 	def _f_(option):
