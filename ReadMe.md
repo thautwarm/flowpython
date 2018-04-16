@@ -1,3 +1,10 @@
+# License
+
+This porject is totally based on the entire [CPython](https://github.com/python/cpython), 
+so it is licensed under the terms of the PSF License Agreement.
+
+See [LICENSE](https://github.com/thautwarm/flowpython/blob/master/LICENSE) for the details.
+
 # Install & Uninstall
 
 - Support Windows 32bit/64bit and Linux 64bit for CPython 3.6.x/3.5.x.

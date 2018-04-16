@@ -1,5 +1,14 @@
+License
+=========================================
+
+This porject is totally based on the entire `<CPython https://github.com/python/cpython>`_, 
+so it is licensed under the terms of the PSF License Agreement.
+
+See `LICENSE (https://github.com/thautwarm/flowpython/blob/master/LICENSE`_ for the details.
+
 
 Additional Grammar Compatible to CPython 
+
 ==========================================
 
 
