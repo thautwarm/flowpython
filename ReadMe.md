@@ -1,6 +1,6 @@
 # License
 
-This porject is totally based on the entire [CPython](https://github.com/python/cpython), 
+This project is totally based on the entire [CPython](https://github.com/python/cpython), 
 so it is licensed under the terms of the PSF License Agreement.
 
 See [LICENSE](https://github.com/thautwarm/flowpython/blob/master/LICENSE) for the details.
@@ -41,7 +41,6 @@ Python 3.5.4+ (heads/3.5-dirty:0a8ff1b, Oct  8 2017, 13:56:29)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> .x -> x+1
 <function <lambda> at 0x7f159379aae8>
-
 ```
 
 
@@ -76,7 +75,6 @@ fix `if-expr` and add some new ways to define `lambda`.
 - `if-expr`  
     you can write
     ```python
-
             ret  =  e1 if j1 else
                     e2 if j2 else
                     e3 
@@ -84,7 +82,6 @@ fix `if-expr` and add some new ways to define `lambda`.
     instead of
 
     ```python
-
             ret  =  e1 if j1 else \
                     e2 if j2 else \
                     e3 
@@ -117,7 +114,7 @@ fix `if-expr` and add some new ways to define `lambda`.
             found the function `ast_for_stmt`, `ast_for_expr_stmt`,`ast_for_flow_stmt`,`ast_for_assert_stmt`, change it as what I did in **flowpython/Python/ast.c**. It tells the Python compiler how to get the data structure from the parsed codes.
     - **Compile&Interpret**
         - change Python/compile.c  
-                This part is kind of complicated to bring out, and I think that you'd better use *version controler* to detect out what's the differences between Flowpython and CPython 3.6.2.
+                This part is kind of complicated to bring out, and I think that you'd better use *version controller* to detect out what's the differences between Flowpython and CPython 3.6.2.
         - change Python/symtable.c  
                 Quite similar to *compile.c*. 
             
@@ -215,7 +212,7 @@ fix `if-expr` and add some new ways to define `lambda`.
     ```
     Each in `[], (), +(), +[], {} ` are called the **operator comparing mode**.     
     **Giving a mode followed by *condef* keyword means giving a default mode.**  
-    The relus are concluded [here](#conclusion-for-pattern-matching)  
+    The results are concluded [here](#conclusion-for-pattern-matching)  
     
         for operator comparing mode "[<optional>]"
         <optional> can be
@@ -431,7 +428,7 @@ An easy way to define `if-elif-else` statements:
 
 ## Pipeline
 
-Sorry for the shortage of documents for new gramamr, and I'm busy with my new semester.   
+Sorry for the shortage of documents for new grammar, and I'm busy with my new semester.   
 It would be completed as sooner as possible.
 ```python
     
@@ -482,20 +479,3 @@ It would be completed as sooner as possible.
 - data: 2017-08-25
     - Add `pipeline` grammar.
     - Change keyword for pattern matching from `condic` to `condef`.
-
-
-
-            
-            
-
-
-
-
-
-           
-
-
-
-
-
-
